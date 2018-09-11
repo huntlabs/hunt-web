@@ -1,0 +1,33 @@
+{
+	"name": "simplehttp-demo",
+    "authors": [
+        "Hunt Labs"
+    ],
+	"description": "A demo for SimpleHttp Client/Server with Hunt-http.",
+	"copyright": "Copyright (C) 2015-2018, HuntLabs.cn",
+	"license": "Apache-2.0",
+	"dependencies": {
+		"hunt-web" :{"path": "../../"}
+	},
+	"versions": [
+		"HuntDebugMode"
+	],
+	"configurations": [
+		{
+			"name": "client",
+			"targetName": "simple-client",
+			"targetType": "executable",
+			"excludedSourceFiles": [
+				"source/server.d"
+			]
+		},
+		{
+			"name": "server",
+			"targetName": "simple-server",
+			"targetType": "executable",
+			"excludedSourceFiles": [
+				"source/client.d"
+			]
+		}
+	]
+}
