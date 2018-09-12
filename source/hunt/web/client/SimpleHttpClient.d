@@ -1,7 +1,7 @@
 module hunt.web.client.SimpleHttpClient;
 
 import hunt.http.client.http.ClientHttpHandler;
-import hunt.http.client.http.Http2Client;
+import hunt.http.client.http.HttpClient;
 import hunt.http.client.http.Http2ClientConnection;
 import hunt.http.client.http.HttpClientConnection;
 import hunt.web.client.SimpleHttpClientConfiguration;
@@ -35,7 +35,7 @@ alias Response = MetaData.Response;
 
 class SimpleHttpClient  : AbstractLifeCycle { 
 
-    private Http2Client http2Client;
+    private HttpClient http2Client;
     // private HashMap!(RequestBuilder, AsynchronousPool!(HttpClientConnection)) poolMap; // = new ConcurrentHashMap!()();
     private SimpleHttpClientConfiguration config;
     // private Timer responseTimer;
@@ -49,7 +49,7 @@ class SimpleHttpClient  : AbstractLifeCycle {
 
     this(SimpleHttpClientConfiguration http2Configuration) {
         this.config = http2Configuration;
-        http2Client = new Http2Client(http2Configuration);
+        http2Client = new HttpClient(http2Configuration);
         // MetricRegistry metrics = http2Configuration.getTcpConfiguration().getMetricReporterFactory().getMetricRegistry();
         // responseTimer = metrics.timer("http2.SimpleHttpClient.response.time");
         // errorMeter = metrics.meter("http2.SimpleHttpClient.error.count");

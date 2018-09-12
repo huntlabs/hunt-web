@@ -1,6 +1,6 @@
 module hunt.web.server.SimpleHttpServer;
 
-import hunt.http.server.http.Http2Server;
+import hunt.http.server.http.HttpServer;
 import hunt.http.server.http.HttpServerConnection;
 import hunt.http.server.http.ServerHttpHandler;
 import hunt.web.server.SimpleHttpServerConfiguration;
@@ -34,7 +34,7 @@ class SimpleHttpServer : AbstractLifeCycle {
 
     private static  int defaultPoolSize = 10; // int.getInteger("hunt.web.server.async.defaultPoolSize", Runtime.getRuntime().availableProcessors());
 
-    private Http2Server http2Server;
+    private HttpServer http2Server;
     private SimpleHttpServerConfiguration configuration;
 
     private Action1!SimpleRequest _headerComplete;
@@ -177,7 +177,7 @@ class SimpleHttpServer : AbstractLifeCycle {
         //     }
         // }
 
-        http2Server = new Http2Server(configuration.getHost(), configuration.getPort(), configuration, 
+        http2Server = new HttpServer(configuration.getHost(), configuration.getPort(), configuration, 
             new ServerHttpHandlerAdapter().acceptConnection(_acceptConnection).acceptHttpTunnelConnection((request, 
                 response, ot, connection) {
             SimpleRequest r = new SimpleRequest(request, response, ot, cast(HttpConnection)connection);
