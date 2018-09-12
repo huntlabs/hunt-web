@@ -1,7 +1,7 @@
 module hunt.web.server.SimpleRequest;
 
 import hunt.web.server.SimpleResponse;
-import hunt.http.server.http.WebSocketHandler;
+import hunt.http.server.WebSocketHandler;
 
 import hunt.http.codec.http.model;
 import hunt.http.codec.http.stream.HttpConnection;

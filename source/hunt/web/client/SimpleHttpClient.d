@@ -1,9 +1,9 @@
 module hunt.web.client.SimpleHttpClient;
 
-import hunt.http.client.http.ClientHttpHandler;
-import hunt.http.client.http.HttpClient;
-import hunt.http.client.http.Http2ClientConnection;
-import hunt.http.client.http.HttpClientConnection;
+import hunt.http.client.ClientHttpHandler;
+import hunt.http.client.HttpClient;
+import hunt.http.client.Http2ClientConnection;
+import hunt.http.client.HttpClientConnection;
 import hunt.web.client.SimpleHttpClientConfiguration;
 import hunt.web.client.SimpleResponse;
 

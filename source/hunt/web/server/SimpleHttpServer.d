@@ -1,11 +1,11 @@
 module hunt.web.server.SimpleHttpServer;
 
-import hunt.http.server.http.HttpServer;
-import hunt.http.server.http.HttpServerConnection;
-import hunt.http.server.http.ServerHttpHandler;
+import hunt.http.server.HttpServer;
+import hunt.http.server.HttpServerConnection;
+import hunt.http.server.ServerHttpHandler;
 import hunt.web.server.SimpleHttpServerConfiguration;
 import hunt.web.server.SimpleRequest;
-import hunt.http.server.http.WebSocketHandler;
+import hunt.http.server.WebSocketHandler;
 
 import hunt.http.codec.http.model.HttpStatus;
 import hunt.http.codec.http.model.MetaData;
