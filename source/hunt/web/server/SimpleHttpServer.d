@@ -22,9 +22,6 @@ import hunt.util.functional;
 import hunt.io;
 import hunt.util.LifeCycle;
 
-import hunt.container.HashMap;
-import hunt.container.Map;
-
 /**
 */
 class SimpleHttpServer : AbstractLifeCycle { 
@@ -33,6 +30,7 @@ class SimpleHttpServer : AbstractLifeCycle {
 
     private HttpServer httpServer;
     private SimpleHttpServerConfiguration configuration;
+    private WebSocketPolicy _webSocketPolicy;
 
     private Action1!SimpleRequest _headerComplete;
     private Action3!(int, string, SimpleRequest) _badMessage;
@@ -43,15 +41,14 @@ class SimpleHttpServer : AbstractLifeCycle {
     // private Meter requestMeter;
     // private ExecutorService handlerExecutorService;
 
-    private Map!(string, WebSocketHandler) webSocketHandlerMap;
-    private WebSocketPolicy _webSocketPolicy;
+    private WebSocketHandler[string] webSocketHandlerMap;
 
     this() {
         this(new SimpleHttpServerConfiguration());
     }
 
     this(SimpleHttpServerConfiguration configuration) {
-        webSocketHandlerMap = new HashMap!(string, WebSocketHandler)();
+        // webSocketHandlerMap = new HashMap!(string, WebSocketHandler)();
         this.configuration = configuration;
         // TODO: Tasks pending completion -@zxp at 7/5/2018, 2:59:11 PM
         // 
@@ -92,7 +89,7 @@ class SimpleHttpServer : AbstractLifeCycle {
     }
 
     SimpleHttpServer registerWebSocket(string uri, WebSocketHandler webSocketHandler) {
-        webSocketHandlerMap.put(uri, webSocketHandler);
+        webSocketHandlerMap[uri] = webSocketHandler;
         return this;
     }
 
@@ -125,58 +122,13 @@ class SimpleHttpServer : AbstractLifeCycle {
 
     override
     protected void initilize() {
-
-        // class SimpleWebSocketHandler : WebSocketHandler
-        // {
-        //     override
-        //     bool acceptUpgrade(MetaData.Request request, MetaData.Response response,
-        //                                  HttpOutputStream output,
-        //                                  HttpConnection connection) {
-        //         info("The connection %s will upgrade to WebSocket connection", connection.getSessionId());
-        //         WebSocketHandler handler = webSocketHandlerMap.get(request.getURI().getPath());
-        //         if (handler == null) {
-        //             response.setStatus(HttpStatus.BAD_REQUEST_400);
-        //             try (HttpOutputStream ot = output) {
-        //                 ot.write(("The " ~ request.getURI().getPath() ~ " can not upgrade to WebSocket").getBytes(StandardCharsets.UTF_8));
-        //             } catch (IOException e) {
-        //                 errorf("Write http message exception", e);
-        //             }
-        //             return false;
-        //         } else {
-        //             return handler.acceptUpgrade(request, response, output, connection);
-        //         }
-        //     }
-
-        //     override
-        //     void onConnect(WebSocketConnection webSocketConnection) {
-        //         Optional.ofNullable(webSocketHandlerMap.get(webSocketConnection.getUpgradeRequest().getURI().getPath()))
-        //                 .ifPresent(handler -> handler.onConnect(webSocketConnection));
-        //     }
-
-        //     override
-        //     WebSocketPolicy getWebSocketPolicy() {
-        //         if (_webSocketPolicy != null) {
-        //             return _webSocketPolicy;
-        //         } else {
-        //             return defaultWebSocketPolicy;
-        //         }
-        //     }
-
-        //     override
-        //     void onFrame(Frame frame, WebSocketConnection connection) {
-        //         Optional.ofNullable(webSocketHandlerMap.get(connection.getUpgradeRequest().getURI().getPath()))
-        //                 .ifPresent(handler -> handler.onFrame(frame, connection));
-        //     }
-
-        //     override
-        //     void onError(Throwable t, WebSocketConnection connection) {
-        //         Optional.ofNullable(webSocketHandlerMap.get(connection.getUpgradeRequest().getURI().getPath()))
-        //                 .ifPresent(handler -> handler.onError(t, connection));
-        //     }
-        // }
+        SimpleWebSocketHandler webSocketHandler = new SimpleWebSocketHandler();
+        webSocketHandler.setWebSocketPolicy(_webSocketPolicy);
 
         httpServer = new HttpServer(configuration.getHost(), configuration.getPort(), configuration, 
-            buildAdapter(), new SimpleWebSocketHandler()); // 
+            buildAdapter(), 
+            webSocketHandler
+            ); // 
 
         httpServer.start();
     }
@@ -265,11 +217,11 @@ class SimpleHttpServer : AbstractLifeCycle {
 
     class SimpleWebSocketHandler : WebSocketHandler
     {
-    // private Map!(string, WebSocketHandler) webSocketHandlerMap;
+        // private Map!(string, WebSocketHandler) webSocketHandlerMap;
 
-    // this(Map!(string, WebSocketHandler) webSocketHandlerMap) {
-    //     this.webSocketHandlerMap = webSocketHandlerMap;
-    // }
+        // this(Map!(string, WebSocketHandler) webSocketHandlerMap) {
+        //     this.webSocketHandlerMap = webSocketHandlerMap;
+        // }
 
         override
         bool acceptUpgrade(MetaData.Request request, 
@@ -277,7 +229,7 @@ class SimpleHttpServer : AbstractLifeCycle {
                 HttpOutputStream output,
                 HttpConnection connection) {
             info("The connection %s will upgrade to WebSocket connection", connection.getSessionId());
-            WebSocketHandler handler = webSocketHandlerMap.get(request.getURI().getPath());
+            WebSocketHandler handler = webSocketHandlerMap.get(request.getURI().getPath(), null);
             if (handler is null) {
                 response.setStatus(HttpStatus.BAD_REQUEST_400);
                 try {
@@ -294,7 +246,7 @@ class SimpleHttpServer : AbstractLifeCycle {
         override
         void onConnect(WebSocketConnection connection) {
             string path = connection.getUpgradeRequest().getURI().getPath();
-            WebSocketHandler handler = webSocketHandlerMap.get(path);
+            WebSocketHandler handler = webSocketHandlerMap.get(path, null);
             if(handler !is null)
                 handler.onConnect(connection);
 
@@ -303,18 +255,9 @@ class SimpleHttpServer : AbstractLifeCycle {
         }
 
         override
-        WebSocketPolicy getWebSocketPolicy() {
-            if (_webSocketPolicy !is null) {
-                return _webSocketPolicy;
-            } else {
-                return defaultWebSocketPolicy;
-            }
-        }
-
-        override
         void onFrame(Frame frame, WebSocketConnection connection) {
             string path = connection.getUpgradeRequest().getURI().getPath();
-            WebSocketHandler handler = webSocketHandlerMap.get(path);
+            WebSocketHandler handler = webSocketHandlerMap.get(path, null);
             if(handler !is null)
                 handler.onFrame(frame, connection);
 
@@ -325,7 +268,7 @@ class SimpleHttpServer : AbstractLifeCycle {
         override
         void onError(Exception t, WebSocketConnection connection) {
             string path = connection.getUpgradeRequest().getURI().getPath();
-            WebSocketHandler handler = webSocketHandlerMap.get(path);
+            WebSocketHandler handler = webSocketHandlerMap.get(path, null);
             if(handler !is null)
                 handler.onError(t, connection);
 
