@@ -12,12 +12,10 @@ import hunt.util.common;
 import hunt.logging;
 import std.range;
 
-alias Request = MetaData.Request;
-alias Response = MetaData.Response;
 
 class SimpleResponse : Closeable { 
 
-    Response response;
+    HttpResponse response;
     HttpOutputStream output;
     HttpURI uri;
     BufferedHttpOutputStream bufferedOutputStream;
@@ -25,7 +23,7 @@ class SimpleResponse : Closeable {
     string characterEncoding = "UTF-8";
     bool asynchronous;
 
-    this(Response response, HttpOutputStream output, HttpURI uri) {
+    this(HttpResponse response, HttpOutputStream output, HttpURI uri) {
         this.output = output;
         this.response = response;
         this.uri = uri;
@@ -71,7 +69,7 @@ class SimpleResponse : Closeable {
     //     return response.spliterator();
     // }
 
-    Response getResponse() {
+    HttpResponse getResponse() {
         return response;
     }
 
@@ -166,7 +164,7 @@ class SimpleResponse : Closeable {
     }
 
     SimpleResponse addCookie(Cookie cookie) {
-        response.getFields().add(HttpHeader.SET_COOKIE, CookieGenerator.generateSetCookie(cookie));
+        getFields().add(HttpHeader.SET_COOKIE, CookieGenerator.generateSetCookie(cookie));
         return this;
     }
 

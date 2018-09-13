@@ -1,9 +1,10 @@
 module hunt.web.client.SimpleHttpClient;
 
-import hunt.http.client.ClientHttpHandler;
 import hunt.http.client.HttpClient;
-import hunt.http.client.Http2ClientConnection;
 import hunt.http.client.HttpClientConnection;
+import hunt.http.client.ClientHttpHandler;
+import hunt.http.client.Http2ClientConnection;
+// import hunt.http.client;
 import hunt.web.client.SimpleHttpClientConfiguration;
 import hunt.web.client.SimpleResponse;
 
@@ -35,7 +36,7 @@ alias Response = MetaData.Response;
 
 class SimpleHttpClient  : AbstractLifeCycle { 
 
-    private HttpClient http2Client;
+    private HttpClient httpClient;
     // private HashMap!(RequestBuilder, AsynchronousPool!(HttpClientConnection)) poolMap; // = new ConcurrentHashMap!()();
     private SimpleHttpClientConfiguration config;
     // private Timer responseTimer;
@@ -49,7 +50,7 @@ class SimpleHttpClient  : AbstractLifeCycle {
 
     this(SimpleHttpClientConfiguration http2Configuration) {
         this.config = http2Configuration;
-        http2Client = new HttpClient(http2Configuration);
+        httpClient = new HttpClient(http2Configuration);
         // MetricRegistry metrics = http2Configuration.getTcpConfiguration().getMetricReporterFactory().getMetricRegistry();
         // responseTimer = metrics.timer("http2.SimpleHttpClient.response.time");
         // errorMeter = metrics.meter("http2.SimpleHttpClient.error.count");
@@ -777,7 +778,7 @@ class SimpleHttpClient  : AbstractLifeCycle {
 
         tracef("Creating connection: %s:%d", host, port);
 
-        Completable!HttpClientConnection connFuture = http2Client.connect(host, port);
+        Completable!HttpClientConnection connFuture = httpClient.connect(host, port);
         connFuture.thenAccept( (HttpClientConnection connection) {
             infof("Connection created: %s:%d, using %s", host, port, typeid(cast(Object)connection));
 
@@ -1050,7 +1051,7 @@ class SimpleHttpClient  : AbstractLifeCycle {
 
     //     tracef("Creating connection: %s:%d", host, port);
 
-    //     Completable!HttpClientConnection connFuture = http2Client.connect(host, port);
+    //     Completable!HttpClientConnection connFuture = httpClient.connect(host, port);
 
     //     import core.thread;
     //     import std.datetime;
@@ -1082,7 +1083,7 @@ class SimpleHttpClient  : AbstractLifeCycle {
     //             config.getConnectTimeout(),
     //             (pool) { // The pooled object factory
     //                 Completable!(PooledObject!(HttpClientConnection)) pooledConn = new Completable!()();
-    //                 Completable!(HttpClientConnection) connFuture = http2Client.connect(host, port);
+    //                 Completable!(HttpClientConnection) connFuture = httpClient.connect(host, port);
     //                 connFuture.thenAccept( (conn) {
     //                     string leakMessage = StringUtils.replace(
     //                             "The Hunt HTTP client connection leaked. id -> %s, host -> %s:%s",
@@ -1130,7 +1131,7 @@ class SimpleHttpClient  : AbstractLifeCycle {
 
     override
     protected void destroy() {
-        http2Client.stop();
+        httpClient.stop();
         // poolMap.forEach((k, v) -) v.stop());
         // foreach(k, v; poolMap)
         //     v.stop();

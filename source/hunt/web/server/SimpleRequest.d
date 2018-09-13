@@ -14,12 +14,9 @@ import hunt.util.functional;
 import hunt.container;
 import std.array;
 
-alias Request = MetaData.Request;
-alias Response = MetaData.Response;
-
 class SimpleRequest {
 
-    Request request;
+    HttpRequest request;
     SimpleResponse response;
     HttpConnection connection;
     Action1!ByteBuffer content;
@@ -32,7 +29,7 @@ class SimpleRequest {
 
     string[string] attributes; // = new ConcurrentHashMap<>();
 
-    this(Request request, Response response,
+    this(HttpRequest request, HttpResponse response,
                          HttpOutputStream output,
                          HttpConnection connection) {
         requestBody = new ArrayList!(ByteBuffer)();
@@ -106,7 +103,7 @@ class SimpleRequest {
         return request.toString();
     }
 
-    Request getRequest() {
+    HttpRequest getRequest() {
         return request;
     }
 
