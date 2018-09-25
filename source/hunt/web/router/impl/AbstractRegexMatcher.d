@@ -31,8 +31,8 @@ abstract class AbstractRegexMatcher : Matcher {
         override
         bool opEquals(Object o) {
             if (this is o) return true;
-            if (o is null || typeid(this) !is typeid(o)) return false;
             RegexRule regexRule = cast(RegexRule) o;
+            if(regexRule is null) return false;
             return rule == regexRule.rule;
         }
 

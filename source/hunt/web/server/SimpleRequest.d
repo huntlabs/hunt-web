@@ -22,9 +22,9 @@ class SimpleRequest {
     Action1!ByteBuffer content;
     Action1!SimpleRequest contentComplete;
     Action1!SimpleRequest messageComplete;
-    List!(ByteBuffer) requestBody; // = new ArrayList!(ByteBuffer)();
+    List!(ByteBuffer) requestBody; 
 
-    List!Cookie cookies;
+    private Cookie[] cookies;
     string stringBody;
 
     string[string] attributes; // = new ConcurrentHashMap<>();
@@ -140,17 +140,14 @@ class SimpleRequest {
     }
 
     string getStringBody(string charset) {
-        if (stringBody == null) {
+        if (stringBody is null) {
             Appender!string buffer;
-            foreach(ByteBuffer b; requestBody)
-            {
+            foreach(ByteBuffer b; requestBody) {
                 buffer.put(cast(string)b.array);
             }
             stringBody = buffer.data; // BufferUtils.toString(requestBody, charset);
-            return stringBody;
-        } else {
-            return stringBody;
-        }
+        } 
+        return stringBody;
     }
 
     string getStringBody() {
@@ -173,14 +170,16 @@ class SimpleRequest {
     //     return Json.toJsonArray(getStringBody());
     // }
 
-    List!Cookie getCookies() {
-        // if (cookies == null) {
-        //     cookies = request.getFields().getValuesList(HttpHeader.COOKIE).stream()
-        //                      .filter(StringUtils::hasText)
-        //                      .flatMap(v -> CookieParser.parseCookie(v).stream())
-        //                      .collect(Collectors.toList());
-        // }
-        implementationMissing();
+    Cookie[] getCookies() {
+        if (cookies is null) {
+			Array!(Cookie) list;
+			foreach(string v; getFields().getValuesList(HttpHeader.COOKIE)) {
+				if(v.empty) continue;
+				foreach(Cookie c; CookieParser.parseCookie(v))
+					list.insertBack(c);
+			}
+			cookies = list.array();
+        }
         return cookies;
     }
 }

@@ -31,8 +31,8 @@ class ParameterPathMatcher : Matcher {
         override
         bool opEquals(Object o) {
             if (this is o) return true;
-            if (o is null || typeid(this) !is typeid(o)) return false;
             ParameterPath that = cast(ParameterPath) o;
+            if(that is null) return false;
             return rule == that.rule;
         }
 

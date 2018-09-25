@@ -33,8 +33,8 @@ abstract class AbstractPatternMatcher : Matcher {
         override
         bool opEquals(Object o) {
             if (this is o) return true;
-            if (o is null || typeid(this) !is typeid(o)) return false;
             PatternRule that = cast(PatternRule) o;
+            if(that is null)   return false;
             return rule == that.rule;
         }
 

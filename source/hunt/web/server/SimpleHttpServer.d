@@ -217,12 +217,6 @@ class SimpleHttpServer : AbstractLifeCycle {
 
     class SimpleWebSocketHandler : WebSocketHandler
     {
-        // private Map!(string, WebSocketHandler) webSocketHandlerMap;
-
-        // this(Map!(string, WebSocketHandler) webSocketHandlerMap) {
-        //     this.webSocketHandlerMap = webSocketHandlerMap;
-        // }
-
         override
         bool acceptUpgrade(MetaData.Request request, 
                 MetaData.Response response,
@@ -249,9 +243,6 @@ class SimpleHttpServer : AbstractLifeCycle {
             WebSocketHandler handler = webSocketHandlerMap.get(path, null);
             if(handler !is null)
                 handler.onConnect(connection);
-
-            // Optional.ofNullable(webSocketHandlerMap.get(webSocketConnection.getUpgradeRequest().getURI().getPath()))
-            //         .ifPresent(handler -> handler.onConnect(webSocketConnection));
         }
 
         override
@@ -260,9 +251,6 @@ class SimpleHttpServer : AbstractLifeCycle {
             WebSocketHandler handler = webSocketHandlerMap.get(path, null);
             if(handler !is null)
                 handler.onFrame(frame, connection);
-
-            // Optional.ofNullable(webSocketHandlerMap.get(connection.getUpgradeRequest().getURI().getPath()))
-            //         .ifPresent(handler -> handler.onFrame(frame, connection));
         }
 
         override
@@ -271,9 +259,6 @@ class SimpleHttpServer : AbstractLifeCycle {
             WebSocketHandler handler = webSocketHandlerMap.get(path, null);
             if(handler !is null)
                 handler.onError(t, connection);
-
-            // Optional.ofNullable(webSocketHandlerMap.get(connection.getUpgradeRequest().getURI().getPath()))
-            //         .ifPresent(handler -> handler.onError(t, connection));
         }
     }
 
