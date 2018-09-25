@@ -819,7 +819,7 @@ class SimpleHttpClient  : AbstractLifeCycle {
         //         }
         //         pooledConn.release();
         //     }
-        //     version(HuntDebugMode) {
+        //     version(HUNT_DEBUG) {
         //         tracef("take the connection %s from pool, released: %s, %s", connection.getSessionId(), pooledConn.isReleased(), connection.getHttpVersion());
         //     }
 
@@ -992,7 +992,7 @@ class SimpleHttpClient  : AbstractLifeCycle {
                 // resTimerCtx.stop();
                 // IO.close(pooledConn.getObject());
                 // pooledConn.release();
-                version(HuntDebugMode) {
+                version(HUNT_DEBUG) {
                     tracef("bad message of the connection %s, released: %s", pooledConn.getSessionId(), "pooledConn.isReleased()");
                 }
             }
@@ -1013,7 +1013,7 @@ class SimpleHttpClient  : AbstractLifeCycle {
                 // resTimerCtx.stop();
                 // IO.close(pooledConn.getObject());
                 // pooledConn.release();
-                version(HuntDebugMode) {
+                version(HUNT_DEBUG) {
                     // tracef("early EOF of the connection %s, released: %s", pooledConn.getObject().getSessionId(), pooledConn.isReleased());
                 }
             }
@@ -1038,7 +1038,7 @@ class SimpleHttpClient  : AbstractLifeCycle {
         } finally {
             // resTimerCtx.stop();
             // pooledConn.release();
-            version(HuntDebugMode) {
+            version(HUNT_DEBUG) {
                 tracef("complete request of the connection %s , released: %s", pooledConn.getSessionId(), "pooledConn.isReleased()");
             }
         }

@@ -80,7 +80,7 @@ class HttpBodyHandler : Handler {
 
         long chunkedEncodingContentLength;
         ctx.onContent( (ByteBuffer buf) {
-            version(HuntDebugMode) {
+            version(HUNT_DEBUG) {
                 tracef("http body handler received content size -> %s", buf.remaining());
             }
 
