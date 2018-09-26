@@ -1,18 +1,20 @@
 module hunt.web.server.SimpleRequest;
 
 import hunt.web.server.SimpleResponse;
-import hunt.http.server.WebSocketHandler;
 
 import hunt.http.codec.http.model;
 import hunt.http.codec.http.stream.HttpConnection;
 import hunt.http.codec.http.stream.HttpOutputStream;
+import hunt.http.server.WebSocketHandler;
 
 import hunt.util.exception;
-import hunt.util.string;
+import hunt.string;
 import hunt.util.functional;
 
 import hunt.container;
+
 import std.array;
+import std.container.array;
 
 class SimpleRequest {
 

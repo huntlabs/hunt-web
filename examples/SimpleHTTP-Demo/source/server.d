@@ -8,7 +8,7 @@ import hunt.web.server.SimpleRequest;
 import hunt.web.server.SimpleResponse;
 
 import hunt.container;
-import hunt.util.string;
+import hunt.string;
 
 import hunt.logging;
 

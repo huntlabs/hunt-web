@@ -23,7 +23,7 @@ import hunt.util.concurrent.CompletableFuture;
 import hunt.util.concurrent.Promise;
 import hunt.util.functional;
 import hunt.util.LifeCycle;
-import hunt.util.string;
+import hunt.string;
 import hunt.io;
 import hunt.logging;
 

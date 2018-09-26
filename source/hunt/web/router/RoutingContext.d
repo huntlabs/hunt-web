@@ -12,7 +12,9 @@ import hunt.util.exception;
 import hunt.util.functional;
 import hunt.util.common;
 
-import hunt.container;
+import hunt.container.ByteBuffer;
+import hunt.container.List;
+import hunt.container.Map;
 
 import std.conv;
 
@@ -154,7 +156,7 @@ abstract class RoutingContext : Closeable {
         return getRequest().getContentLength();
     }
 
-    List!(Cookie) getCookies() {
+    Cookie[] getCookies() {
         return getRequest().getCookies();
     }
 

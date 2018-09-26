@@ -14,7 +14,7 @@ import hunt.logging;
 import hunt.util.exception;
 import hunt.util.functional;
 import hunt.io;
-import hunt.util.string;
+import hunt.string;
 
 import hunt.container;
 // import java.util.Iterator;

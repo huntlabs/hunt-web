@@ -6,7 +6,7 @@ import hunt.web.router.Router;
 import hunt.container;
 
 import hunt.util.exception;
-import hunt.util.string;
+import hunt.string;
 
 import std.array;
 import std.path;

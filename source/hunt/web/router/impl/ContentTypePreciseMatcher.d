@@ -2,7 +2,7 @@ module hunt.web.router.impl.ContentTypePreciseMatcher;
 
 import hunt.web.router.impl.AbstractPreciseMatcher;
 import hunt.http.codec.http.model.MimeTypes;
-import hunt.util.string;
+import hunt.string;
 
 import hunt.web.router.Matcher;
 import std.range;

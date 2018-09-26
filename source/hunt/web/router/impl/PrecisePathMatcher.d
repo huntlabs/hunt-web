@@ -3,7 +3,7 @@ module hunt.web.router.impl.PrecisePathMatcher;
 import hunt.web.router.impl.AbstractPreciseMatcher;
 
 import hunt.web.router.Matcher;
-import hunt.util.string;
+import hunt.string;
 
 alias MatchType = Matcher.MatchType;
 alias MatchResult = Matcher.MatchResult;

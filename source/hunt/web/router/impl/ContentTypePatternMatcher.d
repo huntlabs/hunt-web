@@ -4,7 +4,7 @@ import hunt.web.router.Matcher;
 
 import hunt.web.router.impl.AbstractPatternMatcher;
 import hunt.http.codec.http.model.MimeTypes;
-import hunt.util.string;
+import hunt.string;
 
 import std.range;
 

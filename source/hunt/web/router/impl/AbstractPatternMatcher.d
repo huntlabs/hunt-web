@@ -7,7 +7,7 @@ import hunt.util.exception;
 import hunt.container;
 
 import hunt.logging;
-import hunt.util.string;
+import hunt.string;
 
 import std.conv;
 import std.regex;

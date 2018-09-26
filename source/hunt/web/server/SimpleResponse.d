@@ -1,7 +1,6 @@
 module hunt.web.server.SimpleResponse;
 
 import hunt.http.codec.http.model;
-import hunt.http.codec.http.stream.BufferedHttpOutputStream;
 import hunt.http.codec.http.stream.HttpOutputStream;
 
 import hunt.util.exception;
@@ -18,7 +17,7 @@ class SimpleResponse : Closeable {
     HttpResponse response;
     HttpOutputStream output;
     HttpURI uri;
-    BufferedHttpOutputStream bufferedOutputStream;
+    BufferedOutputStream bufferedOutputStream;
     int bufferSize = 8 * 1024;
     string characterEncoding = "UTF-8";
     bool asynchronous;
@@ -83,7 +82,7 @@ class SimpleResponse : Closeable {
 
     OutputStream getOutputStream() {
         if (bufferedOutputStream is null) {
-            bufferedOutputStream = new BufferedHttpOutputStream(output, bufferSize);
+            bufferedOutputStream = new BufferedOutputStream(output, bufferSize);
         }
         return bufferedOutputStream;
     }
