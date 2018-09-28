@@ -27,7 +27,10 @@
 			"targetType": "executable",
 			"excludedSourceFiles": [
 				"source/client.d"
-			]
+			],
+			"subConfigurations": {
+				"hunt-web" : "openssl"
+			}
 		}
 	]
 }

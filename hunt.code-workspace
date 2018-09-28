@@ -4,7 +4,7 @@
 			"path": "."
 		},
 		{
-			"path": "examples/SimpleHTTP-Demo"
+			"path": "examples/TLS-Demo"
 		}
 	],
 	"settings": {}
