@@ -100,10 +100,12 @@ class Http2ServerBuilder {
         check();
         SimpleHttpServerConfiguration config = server.getConfiguration();
 
+version(WithTLS) {
         import hunt.net.secure.conscrypt.AbstractConscryptSSLContextFactory;
         FileCredentialConscryptSSLContextFactory fc = 
             new FileCredentialConscryptSSLContextFactory(certificate, privateKey, "hunt2018", "hunt2018");
         config.getSecureSessionFactory.setServerSSLContextFactory = fc; 
+}
         return this;
     }
 

@@ -18,18 +18,27 @@
         },
         {
             "name": "boringssl",
+            "versions": [
+                "WithTLS"
+            ],
             "subConfigurations": {
                 "hunt-http": "boringssl"
             }
         },
         {
             "name": "openssl",
+            "versions": [
+                "WithTLS"
+            ],
             "subConfigurations": {
                 "hunt-http": "openssl"
             }
         },
         {
             "name": "opensslv11",
+            "versions": [
+                "WithTLS"
+            ],
             "subConfigurations": {
                 "hunt-http": "opensslv11"
             }

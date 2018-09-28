@@ -13,7 +13,7 @@ import std.stdio;
 void main(string[] args) {
 
 	enum host = "127.0.0.1";
-	enum port = "3333";
+	enum port = "8080";
 
 	SimpleHttpClient client = new SimpleHttpClient();
 
