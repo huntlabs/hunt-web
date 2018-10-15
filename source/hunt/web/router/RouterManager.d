@@ -10,7 +10,7 @@ import hunt.web.router.handler.DefaultErrorResponseHandlerLoader;
 import hunt.web.router.impl.RouterManagerImpl;
 
 import hunt.container;
-import hunt.util.common;
+import hunt.lang.common;
 import hunt.util.exception;
 
 

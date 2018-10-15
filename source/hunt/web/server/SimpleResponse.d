@@ -6,7 +6,7 @@ import hunt.http.codec.http.stream.HttpOutputStream;
 import hunt.util.exception;
 import hunt.util.functional;
 import hunt.io;
-import hunt.util.common;
+import hunt.lang.common;
 
 import hunt.logging;
 import std.range;

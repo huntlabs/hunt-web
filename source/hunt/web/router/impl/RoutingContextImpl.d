@@ -9,9 +9,9 @@ import hunt.web.router.HttpSession;
 import hunt.web.router.RouterManager;
 import hunt.web.router.RoutingContext;
 
+import hunt.lang.common;
 import hunt.util.concurrent.Promise;
 import hunt.util.exception;
-import hunt.util.functional;
 
 import hunt.container;
 

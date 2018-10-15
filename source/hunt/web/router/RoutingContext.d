@@ -10,7 +10,7 @@ import hunt.web.router.handler.DefaultErrorResponseHandlerLoader;
 import hunt.util.concurrent.Promise;
 import hunt.util.exception;
 import hunt.util.functional;
-import hunt.util.common;
+import hunt.lang.common;
 
 import hunt.container.ByteBuffer;
 import hunt.container.List;

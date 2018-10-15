@@ -7,9 +7,9 @@ import hunt.http.codec.http.stream.HttpConnection;
 import hunt.http.codec.http.stream.HttpOutputStream;
 import hunt.http.server.WebSocketHandler;
 
+import hunt.lang.common;
 import hunt.util.exception;
 import hunt.string;
-import hunt.util.functional;
 
 import hunt.container;
 

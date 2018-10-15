@@ -33,7 +33,7 @@ string[] urlList = ["https://127.0.0.1:8081/"];
 
 long getMillisecond(long v)
 {
-    return convert!(TimeUnits.HectoNanosecond, TimeUnits.Millisecond)(v);
+    return convert!(TimeUnit.HectoNanosecond, TimeUnit.Millisecond)(v);
 }
 
 SimpleHttpClient test(SecureSessionFactory secureSessionFactory) {
