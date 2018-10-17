@@ -7,7 +7,7 @@ import hunt.web.router.impl.RouterManagerImpl;
 
 import hunt.container.NavigableSet;
 import hunt.util.Assert;
-import hunt.util.exception;
+import hunt.lang.exception;
 
 import hunt.logging;
 

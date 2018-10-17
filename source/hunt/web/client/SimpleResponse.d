@@ -12,7 +12,7 @@ import hunt.logging;
 
 // import java.io.ByteArrayInputStream;
 import hunt.lang.common;
-import hunt.util.exception;
+import hunt.lang.exception;
 import hunt.util.functional;
 import hunt.io;
 import hunt.string;

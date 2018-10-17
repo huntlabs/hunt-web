@@ -8,7 +8,7 @@ import hunt.web.server.SimpleResponse;
 import hunt.web.router.handler.DefaultErrorResponseHandlerLoader;
 
 import hunt.util.concurrent.Promise;
-import hunt.util.exception;
+import hunt.lang.exception;
 import hunt.util.functional;
 import hunt.lang.common;
 

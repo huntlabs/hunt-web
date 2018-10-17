@@ -11,7 +11,7 @@ import hunt.web.router.impl.RouterManagerImpl;
 
 import hunt.container;
 import hunt.lang.common;
-import hunt.util.exception;
+import hunt.lang.exception;
 
 
 class RouterMatchResult : Comparable!RouterMatchResult {

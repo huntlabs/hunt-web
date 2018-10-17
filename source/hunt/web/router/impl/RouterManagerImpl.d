@@ -20,7 +20,7 @@ import hunt.web.router.RoutingContext;
 
 import hunt.container;
 
-import hunt.util.exception;
+import hunt.lang.exception;
 
 import hunt.logging;
 

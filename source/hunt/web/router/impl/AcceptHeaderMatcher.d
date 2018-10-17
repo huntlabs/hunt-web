@@ -7,7 +7,7 @@ import hunt.web.router.Router;
 import hunt.http.codec.http.model.AcceptMimeType;
 
 import hunt.string;
-import hunt.util.exception;
+import hunt.lang.exception;
 import hunt.container;
 
 import hunt.http.codec.http.model.MimeTypes; //.parseAcceptMIMETypes;

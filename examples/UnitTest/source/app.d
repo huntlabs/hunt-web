@@ -4,7 +4,7 @@ import hunt.util.UnitTest;
 
 import test.http.router.TestMatcher;
 
-import hunt.util.exception;
+import hunt.lang.exception;
 import hunt.logging;
 
 void main()

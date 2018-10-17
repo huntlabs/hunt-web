@@ -3,7 +3,7 @@ module hunt.web.server.SimpleResponse;
 import hunt.http.codec.http.model;
 import hunt.http.codec.http.stream.HttpOutputStream;
 
-import hunt.util.exception;
+import hunt.lang.exception;
 import hunt.util.functional;
 import hunt.io;
 import hunt.lang.common;

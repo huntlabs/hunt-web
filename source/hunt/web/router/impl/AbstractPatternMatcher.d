@@ -3,7 +3,7 @@ module hunt.web.router.impl.AbstractPatternMatcher;
 import hunt.web.router.Matcher;
 import hunt.web.router.Router;
 
-import hunt.util.exception;
+import hunt.lang.exception;
 import hunt.container;
 
 import hunt.logging;

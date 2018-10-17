@@ -8,7 +8,7 @@ import hunt.web.router.RoutingContext;
 import hunt.web.router.RoutingContext;
 
 import hunt.logging;
-import hunt.util.exception;
+import hunt.lang.exception;
 
 import std.conv;
 

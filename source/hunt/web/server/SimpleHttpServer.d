@@ -18,7 +18,7 @@ import hunt.logging;
 
 import hunt.lang.Charset;
 import hunt.lang.common;
-import hunt.util.exception;
+import hunt.lang.exception;
 import hunt.io;
 import hunt.util.LifeCycle;
 

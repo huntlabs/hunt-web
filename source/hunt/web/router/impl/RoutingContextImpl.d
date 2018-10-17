@@ -11,7 +11,7 @@ import hunt.web.router.RoutingContext;
 
 import hunt.lang.common;
 import hunt.util.concurrent.Promise;
-import hunt.util.exception;
+import hunt.lang.exception;
 
 import hunt.container;
 

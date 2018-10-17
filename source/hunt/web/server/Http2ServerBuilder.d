@@ -17,7 +17,7 @@ import hunt.web.router.RoutingContext;
 import hunt.web.router.impl.RoutingContextImpl;
 
 import hunt.util.functional;
-import hunt.util.exception;
+import hunt.lang.exception;
 
 import hunt.container.ByteBuffer;
 import hunt.container.Collections;
