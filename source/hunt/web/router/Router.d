@@ -46,7 +46,7 @@ interface Router : Comparable!Router {
 
     Router handler(Handler handler);
 
-    // Router handler(RoutingHandler handler);
+    Router handler(RoutingHandler handler);
 
     Router enable();
 

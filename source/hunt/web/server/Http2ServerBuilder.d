@@ -5,9 +5,11 @@ import hunt.web.server.SimpleHttpServerConfiguration;
 
 import hunt.http.codec.http.model.BadMessageException;
 import hunt.http.codec.http.model.HttpMethod;
-// import hunt.http.codec.websocket.frame.Frame;
-// import hunt.http.codec.websocket.stream.AbstractWebSocketBuilder;
-// import hunt.http.codec.websocket.stream.WebSocketConnection;
+import hunt.http.codec.websocket.frame.Frame;
+import hunt.http.codec.websocket.stream.AbstractWebSocketBuilder;
+import hunt.http.codec.websocket.stream.WebSocketConnection;
+import hunt.http.server.WebSocketHandler;
+
 import hunt.net.secure.SecureSessionFactory;
 
 import hunt.web.router.handler;
@@ -16,29 +18,30 @@ import hunt.web.router.RouterManager;
 import hunt.web.router.RoutingContext;
 import hunt.web.router.impl.RoutingContextImpl;
 
-import hunt.util.functional;
-import hunt.lang.exception;
-
 import hunt.container.ByteBuffer;
 import hunt.container.Collections;
-
+import hunt.container.LinkedList;
+import hunt.container.List;
+import hunt.lang.common;
+import hunt.lang.exception;
 import hunt.logging;
+import hunt.util.functional;
 
 /**
  * 
  */
 class Http2ServerBuilder {
 
-    private RoutingContext currentCtx; 
+    private static RoutingContext currentCtx; 
 
     private SimpleHttpServer server;
     private RouterManager routerManager;
     private Router currentRouter;
-    // private List!WebSocketBuilder webSocketBuilders; 
+    private List!WebSocketBuilder webSocketBuilders; 
 
     this()
     {
-        // webSocketBuilders = new LinkedList!WebSocketBuilder();
+        webSocketBuilders = new LinkedList!WebSocketBuilder();
     }
 
     Http2ServerBuilder httpsServer() {
@@ -196,10 +199,10 @@ version(WithTLS) {
     }
 
     Http2ServerBuilder handler(RoutingHandler handler) {
-        // currentRouter.handler( (RoutingContext ctx) { handlerWrap(handler, ctx); });
-        currentRouter.handler( new class Handler {
-             void handle(RoutingContext ctx) { handlerWrap(handler, ctx); }
-        });
+        currentRouter.handler( (RoutingContext ctx) { handlerWrap(handler, ctx); });
+        // currentRouter.handler( new class Handler {
+        //      void handle(RoutingContext ctx) { handlerWrap(handler, ctx); }
+        // });
         return this;
     }
 
@@ -215,82 +218,89 @@ version(WithTLS) {
         }
     }
 
+    // TODO: Tasks pending completion -@zxp at 10/23/2018, 4:10:54 PM
+    // 
     // Http2ServerBuilder asyncHandler(Handler handler) {
-    //     currentRouter.handler(ctx -> {
+    //     currentRouter.handler( (RoutingContext ctx) {
     //         ctx.getResponse().setAsynchronous(true);
     //         server.getHandlerExecutorService().execute(() -> handlerWrap(handler, ctx));
     //     });
     //     return this;
     // }
 
-    // WebSocketBuilder webSocket(string path) {
-    //     WebSocketBuilder webSocketBuilder = new WebSocketBuilder(path);
-    //     webSocketBuilders.add(webSocketBuilder);
-    //     return webSocketBuilder;
-    // }
+    WebSocketBuilder webSocket(string path) {
+        WebSocketBuilder webSocketBuilder = new WebSocketBuilder(path);
+        webSocketBuilders.add(webSocketBuilder);
+        return webSocketBuilder;
+    }
 
-    // class WebSocketBuilder : AbstractWebSocketBuilder {
-    //     protected final string path;
-    //     protected Action1<WebSocketConnection> onConnect;
+    /**
+    */
+    class WebSocketBuilder : AbstractWebSocketBuilder {
+        protected string path;
+        protected Action1!(WebSocketConnection) _connectHandler;
 
-    //     WebSocketBuilder(string path) {
-    //         this.path = path;
-    //     }
+        this(string path) {
+            this.path = path;
+        }
 
-    //     WebSocketBuilder onConnect(Action1<WebSocketConnection> onConnect) {
-    //         this.onConnect = onConnect;
-    //         return this;
-    //     }
+        WebSocketBuilder onConnect(Action1!(WebSocketConnection) handler) {
+            this._connectHandler = handler;
+            return this;
+        }
 
-    //     WebSocketBuilder onText(Action2<string, WebSocketConnection> onText) {
-    //         super.onText(onText);
-    //         return this;
-    //     }
+        override WebSocketBuilder onText(Action2!(string, WebSocketConnection) handler) {
+            super.onText(handler);
+            return this;
+        }
 
-    //     WebSocketBuilder onData(Action2<ByteBuffer, WebSocketConnection> onData) {
-    //         super.onData(onData);
-    //         return this;
-    //     }
+        override WebSocketBuilder onData(Action2!(ByteBuffer, WebSocketConnection) handler) {
+            super.onData(handler);
+            return this;
+        }
 
-    //     WebSocketBuilder onError(Action2<Throwable, WebSocketConnection> onError) {
-    //         super.onError(onError);
-    //         return this;
-    //     }
+        override WebSocketBuilder onError(Action2!(Throwable, WebSocketConnection) handler) {
+            super.onError(handler);
+            return this;
+        }
 
-    //     Http2ServerBuilder listen(string host, int port) {
-    //         return Http2ServerBuilder.this.listen(host, port);
-    //     }
+        alias onError = AbstractWebSocketBuilder.onError;
 
-    //     Http2ServerBuilder listen() {
-    //         return Http2ServerBuilder.this.listen();
-    //     }
+        Http2ServerBuilder listen(string host, int port) {
+            return this.outer.listen(host, port);
+        }
 
-    //     private Http2ServerBuilder listenWebSocket() {
-    //         server.registerWebSocket(path, new WebSocketHandler() {
+        Http2ServerBuilder listen() {
+            return this.outer.listen();
+        }
 
-    //             override
-    //             void onConnect(WebSocketConnection webSocketConnection) {
-    //                 Optional.ofNullable(onConnect).ifPresent(c -> c.call(webSocketConnection));
-    //             }
+        private Http2ServerBuilder listenWebSocket() {
+            server.registerWebSocket(path, new class WebSocketHandler {
 
-    //             override
-    //             void onFrame(Frame frame, WebSocketConnection connection) {
-    //                 WebSocketBuilder.this.onFrame(frame, connection);
-    //             }
+                override
+                void onConnect(WebSocketConnection webSocketConnection) {
+                    if(_connectHandler !is null) 
+                        _connectHandler(webSocketConnection);
+                }
 
-    //             override
-    //             void onError(Throwable t, WebSocketConnection connection) {
-    //                 WebSocketBuilder.this.onError(t, connection);
-    //             }
-    //         });
-    //         router().path(path).handler(ctx -> {
-    //         });
-    //         return Http2ServerBuilder.this;
-    //     }
+                override
+                void onFrame(Frame frame, WebSocketConnection connection) {
+                    this.outer.onFrame(frame, connection);
+                }
 
-    // }
+                override
+                void onError(Exception t, WebSocketConnection connection) {
+                    this.outer.onError(t, connection);
+                }
+            });
 
-    // static Optional<RoutingContext> getCurrentCtx() {
-    //     return Optional.ofNullable(currentCtx.get());
-    // }
+            router().path(path).handler( (ctx) { });
+            return this.outer;
+        }
+
+    }
+
+    static RoutingContext getCurrentCtx() {
+        return currentCtx;
+    }
 }

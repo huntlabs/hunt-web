@@ -1,6 +1,7 @@
 module hunt.web.router.impl.RouterImpl;
 
 import hunt.web.router.Router;
+import hunt.web.router.RoutingContext;
 
 import hunt.http.codec.http.model.HttpMethod;
 import hunt.web.router.handler.Handler;
@@ -33,7 +34,7 @@ class RouterImpl : Router {
     private Set!(MatchType) matchTypes;
 
     private Handler _handler;
-    // private RoutingHandler _routingHandler;
+    private RoutingHandler _routingHandler;
     private bool _isEnable = true;
     private List!(string) urlList; // = new ArrayList!(string)();
 
@@ -178,10 +179,17 @@ class RouterImpl : Router {
         return this;
     }
 
-    // Router handler(RoutingHandler h) {
-    //     this._routingHandler = h;
-    //     return this;
-    // }
+    Router handler(RoutingHandler h) {
+        this._routingHandler = h;
+        this._handler = new class Handler {
+             void handle(RoutingContext ctx) { 
+                 if(this.outer._routingHandler !is null) {
+                     this.outer._routingHandler(ctx);
+                 }
+              }
+        };
+        return this;
+    }
 
     override
     Router enable() {
