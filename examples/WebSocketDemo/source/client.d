@@ -1,7 +1,7 @@
 
-import hunt.web.client.SimpleHttpClient;
-import hunt.web.client.SimpleResponse;
-
+import hunt.web.client.SimpleWebSocketClient;
+import hunt.web.helper;
+import hunt.http.codec.websocket.stream.WebSocketConnection;
 import hunt.util.concurrent.Promise;
 import hunt.util.concurrent.CompletableFuture;
 
@@ -14,49 +14,10 @@ void main(string[] args) {
 
 	enum host = "127.0.0.1";
 	enum port = "8080";
-
-	SimpleHttpClient client = new SimpleHttpClient();
-
-	trace("step 1.....");
-	for (int i = 0; i < 1; i++) {
-		client.post("http://" ~ host ~ ":" ~ port ~ "/postData")
-				.put("RequestId", i.to!string ~ "_")
-				.bodyContent("test post data, hello foo " ~ i.to!string)
-				.submit( (SimpleResponse r) {
-					writeln(r.getStringBody());
-				});
-	}
-
-	// FIXME: Needing refactor or cleanup -@zxp at 7/23/2018, 10:40:57 AM
-	// 
-	// trace("step 2.....");
-	// for (int i = 10; i < 11; i++) {
-	// 	client.post("http://" ~ host ~ ":" ~ port ~ "/postData")
-	// 			.put("RequestId", i.to!string ~ "_")
-	// 			.bodyContent("test post data, hello foo " ~ i.to!string)
-	// 			.submit()
-	// 			.thenAccept( (SimpleResponse r) {
-	// 				writeln(r.getStringBody());
-	// 			});
-	// }
-
-	// trace("step 3.....");
-	// for (int i = 30; i < 31; i++) {
-	// 	CompletableFuture!SimpleResponse future = client
-	// 			.post("http://" ~ host ~ ":" ~ port ~ "/postData")
-	// 			.put("RequestId", i.to!string ~ "_")
-	// 			.bodyContent("test post data, hello foo " ~ i.to!string)
-	// 			.submit();
-				
-	// 	SimpleResponse r = future.get();
-	// 	if( r is null)
-	// 	{
-	// 		warning("no response");
-	// 	}
-	// 	else
-	// 		writeln(r.getStringBody());
-	// }
-
-	// getchar();
-	client.stop();
+	
+	SimpleWebSocketClient client = createWebSocketClient();
+	client.webSocket("ws://" ~ host ~ ":" ~ port ~ "/helloWebSocket")
+			.onText((text, conn) { writeln("The client received: " ~ text); })
+			.connect()
+			.thenAccept((conn) { conn.sendText("Hello server."); } );
 }

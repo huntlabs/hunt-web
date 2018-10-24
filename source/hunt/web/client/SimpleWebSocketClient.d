@@ -14,7 +14,6 @@ import hunt.http.codec.websocket.model.IncomingFrames;
 import hunt.http.codec.websocket.stream.AbstractWebSocketBuilder;
 import hunt.http.codec.websocket.stream.WebSocketConnection;
 import hunt.http.codec.websocket.stream.WebSocketPolicy;
-// import hunt.http.codec.websocket.utils.WSURI;
 
 import hunt.container.ByteBuffer;
 import hunt.container.List;
@@ -28,10 +27,6 @@ import hunt.util.LifeCycle;
 
 import std.string;
 
-// import java.net.MalformedURLException;
-// import java.nio.ByteBuffer;
-// import java.util.List;
-// import java.util.concurrent.CompletableFuture;
 
 /**
  * 
@@ -59,9 +54,8 @@ class SimpleWebSocketClient : AbstractLifeCycle {
 
     HandshakeBuilder webSocket(HttpURI url) {
         try {
-            if (!(url.getPath().strip().empty())) {
+            if (url.getPath().strip().empty()) 
                 url.setPath("/");
-            }
             HttpRequest httpRequest = new HttpRequest(HttpMethod.GET.asString(), 
                 url, HttpVersion.HTTP_1_1, new HttpFields());
 
@@ -122,7 +116,7 @@ class SimpleWebSocketClient : AbstractLifeCycle {
 
         alias onError = AbstractWebSocketBuilder.onError;
 
-        WebSocketConnection connect() {
+        CompletableFuture!WebSocketConnection connect() {
             Completable!(HttpClientConnection) c = httpClient.connect(host, port);
             HttpClientConnection conn = c.get();
 
@@ -143,9 +137,13 @@ class SimpleWebSocketClient : AbstractLifeCycle {
                 webSocketPolicy = WebSocketPolicy.newClientPolicy();
             }
 
+            future.thenAccept((wsc) {
+                clientIncomingFrames.setWebSocketConnection(wsc);
+            });
+
             conn.upgradeWebSocket(request, webSocketPolicy, future, new class ClientHttpHandler.Adapter {
                 override
-                bool messageComplete(HttpRequest request, MetaData.Response response,
+                bool messageComplete(HttpRequest request, HttpResponse response,
                                                 HttpOutputStream output,
                                                 HttpConnection connection) {
                     infof("Upgrade websocket success: %s, %s", response.getStatus(), response.getReason());
@@ -153,44 +151,21 @@ class SimpleWebSocketClient : AbstractLifeCycle {
                 }
             }, clientIncomingFrames);
 
-            WebSocketConnection wsc = future.get();
-            assert(wsc !is null);
-            clientIncomingFrames.setWebSocketConnection(wsc);
+            // import core.time;
+            // import core.thread;
+            // WebSocketConnection wsc = future.get();
+            // int count = 5;
+            // while(wsc is null && count>0) {
+            //     warning("xxxxx=>", count);
+            //     Thread.sleep(200.msecs);
+            //     wsc = future.get();
+            //     count--;
+            // }
+            // assert(wsc !is null);
+            // clientIncomingFrames.setWebSocketConnection(wsc);
+            // return wsc;
 
-            return wsc;
-            // TODO: Tasks pending completion -@zxp at 10/23/2018, 3:53:34 PM
-            // 
-            // return httpClient.connect(host, port).thenCompose(conn -> {
-            //     ClientIncomingFrames clientIncomingFrames = new ClientIncomingFrames() {
-
-            //         override
-            //         void incomingError(Throwable t) {
-            //             HandshakeBuilder.this.onError(t, webSocketConnection);
-            //         }
-
-            //         override
-            //         void incomingFrame(Frame frame) {
-            //             HandshakeBuilder.this.onFrame(frame, webSocketConnection);
-            //         }
-            //     };
-            //     Promise.Completable!(WebSocketConnection) future = new Promise.Completable<>();
-            //     if (webSocketPolicy == null) {
-            //         webSocketPolicy = WebSocketPolicy.newClientPolicy();
-            //     }
-            //     conn.upgradeWebSocket(request, webSocketPolicy, future, new ClientHttpHandler.Adapter() {
-            //         override
-            //         bool messageComplete(HttpRequest request, MetaData.Response response,
-            //                                        HttpOutputStream output,
-            //                                        HttpConnection connection) {
-            //             log.info("Upgrade websocket success: %s, %s", response.getStatus(), response.getReason());
-            //             return true;
-            //         }
-            //     }, clientIncomingFrames);
-            //     return future.thenApply(webSocketConnection -> {
-            //         clientIncomingFrames.setWebSocketConnection(webSocketConnection);
-            //         return webSocketConnection;
-            //     });
-            // });
+            return future;
         }
     }
 
@@ -205,13 +180,14 @@ class SimpleWebSocketClient : AbstractLifeCycle {
 }
 
 
+/**
+*/
+abstract protected class ClientIncomingFrames : IncomingFrames {
 
-    abstract protected class ClientIncomingFrames : IncomingFrames {
+    protected WebSocketConnection webSocketConnection;
 
-        protected WebSocketConnection webSocketConnection;
-
-        void setWebSocketConnection(WebSocketConnection webSocketConnection) {
-            this.webSocketConnection = webSocketConnection;
-        }
-
+    void setWebSocketConnection(WebSocketConnection webSocketConnection) {
+        this.webSocketConnection = webSocketConnection;
     }
+
+}
