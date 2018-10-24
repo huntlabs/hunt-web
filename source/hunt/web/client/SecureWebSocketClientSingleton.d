@@ -1,4 +1,6 @@
-module hunt.web.client.websocket.SecureWebSocketClientSingleton;
+module hunt.web.client.SecureWebSocketClientSingleton;
+
+version(WithTLS) :
 
 import hunt.web.client.SimpleWebSocketClient;
 import hunt.web.client.SimpleHttpClientConfiguration;

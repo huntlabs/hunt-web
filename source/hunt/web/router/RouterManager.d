@@ -86,7 +86,8 @@ interface RouterManager : RequestAcceptor {
     static RouterManager create(HttpBodyConfiguration configuration) {
         RouterManagerImpl routerManager = new RouterManagerImpl();
         routerManager.register().path("*").handler(new HttpBodyHandler(configuration));
-        routerManager.register(DEFAULT_LAST_ROUTER_ID).path("*").handler(DefaultErrorResponseHandlerLoader.getInstance().getHandler());
+        routerManager.register(DEFAULT_LAST_ROUTER_ID).path("*").
+            handler(DefaultErrorResponseHandlerLoader.getInstance().getHandler());
         return routerManager;
     }
 }

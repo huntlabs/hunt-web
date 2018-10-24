@@ -1,21 +1,23 @@
 module hunt.web.helper;
 
+import hunt.web.client.SecureWebSocketClientSingleton;
 import hunt.web.client.SimpleHttpClient;
 import hunt.web.client.SimpleHttpClientConfiguration;
 import hunt.web.client.SimpleResponse;
+import hunt.web.client.SimpleWebSocketClient;
+import hunt.web.client.WebSocketClientSingleton;
 
 import hunt.web.server.Http2ServerBuilder;
 import hunt.web.server.SimpleHttpServer;
 import hunt.web.server.SimpleHttpServerConfiguration;
+import hunt.web.server.SimpleWebSocketServer;
+
 import hunt.web.router.handler.HttpBodyHandler;
 
 import hunt.http.codec.http.model.HttpVersion;
 
 import hunt.util.concurrent.Promise;
 import hunt.util.concurrent.CompletableFuture;
-
-import hunt.net.secure.SecureSessionFactory;
-
 
 private __gshared SimpleHttpClient _httpClient;
 private __gshared SimpleHttpClient _httpsClient;
@@ -97,20 +99,6 @@ SimpleHttpClient createHttpClient(SimpleHttpClientConfiguration configuration) {
 }
 
 /**
-* Create a new HTTPs client.
-*
-* @param secureSessionFactory The secure session factory. We provide JDK or OpenSSL secure session factory.
-* @return A new HTTPs client.
-*/
-SimpleHttpClient createHttpsClient(SecureSessionFactory secureSessionFactory) {
-    SimpleHttpClientConfiguration configuration = new SimpleHttpClientConfiguration();
-    configuration.setSecureSessionFactory(secureSessionFactory);
-    configuration.setSecureConnectionEnabled(true);
-    return new SimpleHttpClient(configuration);
-}
-
-
-/**
  * Use fluent API to create an new HTTP server instance.
  *
  * @return HTTP server builder.
@@ -163,16 +151,6 @@ Http2ServerBuilder httpsServer() {
 }
 
 /**
- * Create a new HTTPs server.
- *
- * @param secureSessionFactory The secure session factory. We provide JDK or OpenSSL secure session factory.
- * @return HTTP server builder.
- */
-Http2ServerBuilder httpsServer(SecureSessionFactory secureSessionFactory) {
-    return new Http2ServerBuilder().httpsServer(secureSessionFactory);
-}
-
-/**
  * Create a new HTTP server instance
  *
  * @return A new HTTP server instance
@@ -189,4 +167,117 @@ SimpleHttpServer createHttpServer() {
  */
 SimpleHttpServer createHttpServer(SimpleHttpServerConfiguration configuration) {
     return new SimpleHttpServer(configuration);
+}
+
+
+/**
+ * Create a new WebSocket server.
+ *
+ * @return A new WebSocket server.
+ */
+static SimpleWebSocketServer createWebSocketServer() {
+    return new SimpleWebSocketServer();
+}
+
+/**
+ * Create a new WebSocket server.
+ *
+ * @param serverConfiguration The WebSocket server configuration.
+ * @return A new WebSocket server.
+ */
+static SimpleWebSocketServer createWebSocketServer(SimpleHttpServerConfiguration serverConfiguration) {
+    return new SimpleWebSocketServer(serverConfiguration);
+}
+
+/**
+ * Get the WebSocket client singleton.
+ *
+ * @return The websocket client singleton.
+ */
+static SimpleWebSocketClient webSocketClient() {
+    return WebSocketClientSingleton.getInstance().webSocketClient();
+}
+
+/**
+ * Create a new WebSocket client.
+ *
+ * @return A new WebSocket client.
+ */
+static SimpleWebSocketClient createWebSocketClient() {
+    return new SimpleWebSocketClient();
+}
+
+/**
+ * Create a new WebSocket client.
+ *
+ * @param config The WebSocket client configuration.
+ * @return A new WebSocket client.
+ */
+static SimpleWebSocketClient createWebSocketClient(SimpleHttpClientConfiguration config) {
+    return new SimpleWebSocketClient(config);
+}
+
+
+version(WithTLS) {
+
+import hunt.net.secure.SecureSessionFactory;
+
+/**
+ * Create a new HTTPs server.
+ *
+ * @param secureSessionFactory The secure session factory. We provide JDK or OpenSSL secure session factory.
+ * @return HTTP server builder.
+ */
+Http2ServerBuilder httpsServer(SecureSessionFactory secureSessionFactory) {
+    return new Http2ServerBuilder().httpsServer(secureSessionFactory);
+}
+
+/**
+* Create a new HTTPs client.
+*
+* @param secureSessionFactory The secure session factory. We provide JDK or OpenSSL secure session factory.
+* @return A new HTTPs client.
+*/
+SimpleHttpClient createHttpsClient(SecureSessionFactory secureSessionFactory) {
+    SimpleHttpClientConfiguration configuration = new SimpleHttpClientConfiguration();
+    configuration.setSecureSessionFactory(secureSessionFactory);
+    configuration.setSecureConnectionEnabled(true);
+    return new SimpleHttpClient(configuration);
+}
+
+
+/**
+ * Create a new secure WebSocket server.
+ *
+ * @return A new secure WebSocket server.
+ */
+static SimpleWebSocketServer createSecureWebSocketServer() {
+    SimpleHttpServerConfiguration serverConfiguration = new SimpleHttpServerConfiguration();
+    serverConfiguration.setSecureConnectionEnabled(true);
+    serverConfiguration.getSecureSessionFactory().setSupportedProtocols(["http/1.1"]);
+    return new SimpleWebSocketServer(serverConfiguration);
+}
+
+/**
+ * Create a new secure WebSocket client.
+ *
+ * @return A new secure WebSocket client.
+ */
+static SimpleWebSocketClient createSecureWebSocketClient() {
+    SimpleHttpClientConfiguration http2Configuration = new SimpleHttpClientConfiguration();
+    http2Configuration.setSecureConnectionEnabled(true);
+    http2Configuration.getSecureSessionFactory().setSupportedProtocols(["http/1.1"]);
+    return new SimpleWebSocketClient(http2Configuration);
+}
+
+
+/**
+ * Get the secure WebSocket client singleton.
+ *
+ * @return The secure WebSocket client singleton.
+ */
+static SimpleWebSocketClient secureWebSocketClient() {
+    return SecureWebSocketClientSingleton.getInstance().secureWebSocketClient();
+}
+
 }

@@ -33,3 +33,4 @@ examples/TLS-Demo/tls-client
 examples/TLS-Demo/tls-server
 examples/SimpleHTTP-Demo/simple-client
 examples/SimpleHTTP-Demo/simple-server
+examples/WebSocketDemo/simple-server

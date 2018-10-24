@@ -222,10 +222,6 @@ class RouterImpl : Router {
         return _handler;
     }
 
-    // int compareTo(Router o) {
-    //     return compare(id, o.getId());
-    // }
-
     int opCmp(Router o)
     {
         return compare(id, o.getId());
@@ -239,15 +235,13 @@ class RouterImpl : Router {
         return opCmp(r);
     }
 
-    // static int compare(int x, int y) {
-    //     return (x < y) ? -1 : ((x == y) ? 0 : 1);
-    // }
 
     override
     bool opEquals(Object o) {
         if (this is o) return true;
-        if (o is null || typeid(this) !is typeid(o)) return false;
         RouterImpl router = cast(RouterImpl) o;
+        if(router is null)
+            return false;
         return id == router.id;
     }
 
@@ -258,10 +252,8 @@ class RouterImpl : Router {
 
     override
     string toString() {
-        return "Router {" ~
-                "id=" ~ id.to!string() ~
+        return "Router {id=" ~ id.to!string() ~
                 ", matchTypes=" ~ matchTypes.toString() ~
-                ", url=" ~ urlList.toString() ~
-                '}';
+                ", url=" ~ urlList.toString() ~ "}";
     }
 }

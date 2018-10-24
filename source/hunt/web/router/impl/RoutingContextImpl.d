@@ -9,11 +9,11 @@ import hunt.web.router.HttpSession;
 import hunt.web.router.RouterManager;
 import hunt.web.router.RoutingContext;
 
-import hunt.lang.common;
-import hunt.util.concurrent.Promise;
-import hunt.lang.exception;
-
 import hunt.container;
+import hunt.lang.common;
+import hunt.lang.exception;
+import hunt.logging;
+import hunt.util.concurrent.Promise;
 
 import std.container;
 
@@ -24,9 +24,9 @@ class RoutingContextImpl : RoutingContext {
 
     private SimpleRequest request;
     private NavigableSet!(RouterMatchResult) routers;
-    private  RouterMatchResult current;
-    private  HttpBodyHandlerSPI httpBodyHandlerSPI;
-    private  HttpSessionHandlerSPI httpSessionHandlerSPI;
+    private RouterMatchResult current;
+    private HttpBodyHandlerSPI httpBodyHandlerSPI;
+    private HttpSessionHandlerSPI httpSessionHandlerSPI;
     // private TemplateHandlerSPI templateHandlerSPI = TemplateHandlerSPILoader.getInstance().getTemplateHandlerSPI();
     private  bool asynchronousRead;
     // private  ConcurrentLinkedDeque<Promise<?>> handlerPromiseQueue;
@@ -105,13 +105,14 @@ class RoutingContextImpl : RoutingContext {
     override
     bool next() {
         current = routers.pollFirst();
-        if(current !is null) {
-            RouterImpl r = cast(RouterImpl)current.getRouter();
-            Handler handler = r.getHandler();
-            handler.handle(this);
-            return true;
-        }
-        return false;
+        if(current is null) 
+            return false;
+
+        RouterImpl r = cast(RouterImpl)current.getRouter();
+        Handler handler = r.getHandler();
+        version(HUNT_DEBUG) trace("current handler: ", typeid(cast(Object)handler));
+        handler.handle(this);
+        return true;
     }
 
     override

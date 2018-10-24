@@ -1,4 +1,4 @@
-module hunt.web.server.websocket.SimpleWebSocketServer;
+module hunt.web.server.SimpleWebSocketServer;
 
 import hunt.web.server.Http2ServerBuilder;
 import hunt.web.server.SimpleHttpServerConfiguration;

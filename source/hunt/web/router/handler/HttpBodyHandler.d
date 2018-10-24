@@ -11,11 +11,10 @@ import hunt.web.router.impl.RoutingContextImpl;
 
 import hunt.container;
 import hunt.io;
-
 import hunt.lang.exception;
+import hunt.logging;
 import hunt.string;
 
-import hunt.logging;
 import std.array;
 
 /**
@@ -42,6 +41,7 @@ class HttpBodyHandler : Handler {
     }
 
     override void handle(RoutingContext context) {
+        version(HUNT_DEBUG) trace("handling: ", context.toString());
 
         RoutingContextImpl ctx = cast(RoutingContextImpl) context;
         SimpleRequest request = ctx.getRequest();

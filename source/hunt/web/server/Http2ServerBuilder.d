@@ -114,12 +114,20 @@ version(WithTLS) {
 
     Http2ServerBuilder listen(string host, int port) {
         check();
+        foreach(WebSocketBuilder b; webSocketBuilders) {
+            b.listenWebSocket();
+        }
+
         server.headerComplete( (req) { routerManager.accept(req); }).listen(host, port);
+
         return this;
     }
 
     Http2ServerBuilder listen() {
         check();
+        foreach(WebSocketBuilder b; webSocketBuilders) {
+            b.listenWebSocket();
+        }
         server.headerComplete( (req) { routerManager.accept(req); }).listen();
         return this;
     }
@@ -212,7 +220,7 @@ version(WithTLS) {
             handler(ctx);
         } catch (Exception e) {
             ctx.fail(e);
-            errorf("http server handler exception", e);
+            errorf("http server handler exception: ", e);
         } finally {
             currentCtx = null;
         }

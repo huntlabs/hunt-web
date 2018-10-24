@@ -202,8 +202,7 @@ class SimpleHttpServer : AbstractLifeCycle {
         return adapter;
     }
 
-    override
-    protected void destroy() {
+    override protected void destroy() {
         try {
             // handlerExecutorService.shutdown();
         } catch (Exception e) {
@@ -215,19 +214,18 @@ class SimpleHttpServer : AbstractLifeCycle {
         }
     }
 
-    class SimpleWebSocketHandler : WebSocketHandler
-    {
+    class SimpleWebSocketHandler : WebSocketHandler {
+
         override
-        bool acceptUpgrade(MetaData.Request request, 
-                MetaData.Response response,
-                HttpOutputStream output,
-                HttpConnection connection) {
-            info("The connection %s will upgrade to WebSocket connection", connection.getSessionId());
+        bool acceptUpgrade(HttpRequest request, HttpResponse response, 
+            HttpOutputStream output, HttpConnection connection) {
+                
             WebSocketHandler handler = webSocketHandlerMap.get(request.getURI().getPath(), null);
             if (handler is null) {
                 response.setStatus(HttpStatus.BAD_REQUEST_400);
                 try {
-                    output.write(cast(byte[])("The " ~ request.getURI().getPath() ~ " can not upgrade to WebSocket"));
+                    output.write(cast(byte[])("The " ~ 
+                        request.getURI().getPath() ~ " can not upgrade to WebSocket"));
                 } catch (IOException e) {
                     errorf("Write http message exception", e);
                 }
