@@ -4,13 +4,12 @@ import hunt.web.router.impl.AbstractPreciseMatcher;
 import hunt.web.router.Matcher;
 import hunt.web.router.Router;
 
-import hunt.http.codec.http.model.AcceptMimeType;
-
 import hunt.string;
 import hunt.lang.exception;
 import hunt.container;
 
-import hunt.http.codec.http.model.MimeTypes; //.parseAcceptMIMETypes;
+import hunt.util.MimeTypeUtils; 
+import hunt.util.AcceptMimeType;
 
 alias MatchType = Matcher.MatchType;
 alias MatchResult = Matcher.MatchResult;
@@ -53,7 +52,7 @@ class AcceptHeaderMatcher : AbstractPreciseMatcher {
             return null;
         }
 
-        Array!AcceptMimeType acceptMIMETypes = MimeTypes.parseAcceptMIMETypes(value);
+        Array!AcceptMimeType acceptMIMETypes = MimeTypeUtils.parseAcceptMIMETypes(value);
         Set!Router set = new HashSet!Router();
 
         foreach (AcceptMimeType type ; acceptMIMETypes) {

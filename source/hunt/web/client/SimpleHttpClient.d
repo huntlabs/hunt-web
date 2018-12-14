@@ -28,13 +28,13 @@ import hunt.string;
 import hunt.util.concurrent.CompletableFuture;
 import hunt.util.concurrent.Promise;
 import hunt.util.functional;
-import hunt.util.LifeCycle;
+import hunt.util.Lifecycle;
 
 import std.string;
 
 alias Response = MetaData.Response;
 
-class SimpleHttpClient  : AbstractLifeCycle { 
+class SimpleHttpClient  : AbstractLifecycle { 
 
     private HttpClient httpClient;
     // private HashMap!(RequestBuilder, AsynchronousPool!(HttpClientConnection)) poolMap; // = new ConcurrentHashMap!()();
@@ -796,10 +796,10 @@ class SimpleHttpClient  : AbstractLifeCycle {
                 if (isSendReq) {
                     send(reqBuilder, connection, createClientHttpHandler(reqBuilder, connection));
                 } else {
-                    IO.close(connection);
+                    IOUtils.close(connection);
                 }
                 // .exceptionally( (ex) {
-                //     IO.close(connection);
+                //     IOUtils.close(connection);
                 // });
             } else {
                 send(reqBuilder, connection, createClientHttpHandler(reqBuilder, connection));
@@ -828,10 +828,10 @@ class SimpleHttpClient  : AbstractLifeCycle {
         //             if (isSendReq) {
         //                 send(reqBuilder, connection, createClientHttpHandler(reqBuilder, pooledConn));
         //             } else {
-        //                 IO.close(connection);
+        //                 IOUtils.close(connection);
         //             }
         //         }).exceptionally( (ex) {
-        //             IO.close(connection);
+        //             IOUtils.close(connection);
         //             return null;
         //         });
         //     } else {
@@ -868,7 +868,7 @@ class SimpleHttpClient  : AbstractLifeCycle {
             };
             connection.send(reqBuilder.request, p, handler);
         // } else if (reqBuilder.multiPartProvider != null) {
-        //     IO.close(reqBuilder.multiPartProvider);
+        //     IOUtils.close(reqBuilder.multiPartProvider);
         //     reqBuilder.multiPartProvider.setListener(() => tracef("multi part content listener"));
         //     if (reqBuilder.multiPartProvider.getLength() > 0) {
         //         reqBuilder.put(HttpHeader.CONTENT_LENGTH, string.valueOf(reqBuilder.multiPartProvider.getLength()));
@@ -910,7 +910,7 @@ class SimpleHttpClient  : AbstractLifeCycle {
         //     };
         //     connection.send(reqBuilder.request, p, handler);
         // } else if (reqBuilder.multiPartProvider != null) {
-        //     IO.close(reqBuilder.multiPartProvider);
+        //     IOUtils.close(reqBuilder.multiPartProvider);
         //     reqBuilder.multiPartProvider.setListener(() => tracef("multi part content listener"));
         //     if (reqBuilder.multiPartProvider.getLength() > 0) {
         //         reqBuilder.put(HttpHeader.CONTENT_LENGTH, string.valueOf(reqBuilder.multiPartProvider.getLength()));
@@ -990,7 +990,7 @@ class SimpleHttpClient  : AbstractLifeCycle {
             } finally {
                 // errorMeter.mark();
                 // resTimerCtx.stop();
-                // IO.close(pooledConn.getObject());
+                // IOUtils.close(pooledConn.getObject());
                 // pooledConn.release();
                 version(HUNT_DEBUG) {
                     tracef("bad message of the connection %s, released: %s", pooledConn.getSessionId(), "pooledConn.isReleased()");
@@ -1011,7 +1011,7 @@ class SimpleHttpClient  : AbstractLifeCycle {
             } finally {
                 // errorMeter.mark();
                 // resTimerCtx.stop();
-                // IO.close(pooledConn.getObject());
+                // IOUtils.close(pooledConn.getObject());
                 // pooledConn.release();
                 version(HUNT_DEBUG) {
                     // tracef("early EOF of the connection %s, released: %s", pooledConn.getObject().getSessionId(), pooledConn.isReleased());
@@ -1122,7 +1122,7 @@ class SimpleHttpClient  : AbstractLifeCycle {
     // }
 
     override
-    protected void initilize() {
+    protected void initialize() {
         // auto r = config.getHealthCheck();
         // if(r !is null)
         //     r.start();

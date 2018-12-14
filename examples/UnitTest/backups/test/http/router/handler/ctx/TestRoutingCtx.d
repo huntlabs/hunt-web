@@ -2,7 +2,7 @@ module test.http.router.handler.ctx;
 
 import hunt.http.$;
 import hunt.http.codec.http.model.HttpStatus;
-import hunt.web.server.Http2ServerBuilder;
+import hunt.web.server.HttpServerBuilder;
 import hunt.web.router.RoutingContext;
 import hunt.util.Assert;
 import hunt.util.Test;
@@ -11,7 +11,7 @@ import test.http.router.handler.AbstractHttpHandlerTest;
 import java.util.Optional;
 import java.util.concurrent.Phaser;
 
-import hunt.web.server.Http2ServerBuilder.getCurrentCtx;
+import hunt.web.server.HttpServerBuilder.getCurrentCtx;
 
 
 /**
@@ -23,7 +23,7 @@ public class TestRoutingCtx extends AbstractHttpHandlerTest {
     public void test() {
         Phaser phaser = new Phaser(2);
 
-        Http2ServerBuilder s = $.httpServer();
+        HttpServerBuilder s = $.httpServer();
         s.router().get("/testCtx").asyncHandler(ctx -> {
             ctx.setAttribute("hiCtx", "Woo");
             ctx.next();

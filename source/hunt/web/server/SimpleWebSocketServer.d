@@ -1,14 +1,14 @@
 module hunt.web.server.SimpleWebSocketServer;
 
-import hunt.web.server.Http2ServerBuilder;
+import hunt.web.server.HttpServerBuilder;
 import hunt.web.server.SimpleHttpServerConfiguration;
 import hunt.web.router.handler.HttpBodyHandler;
-import hunt.util.LifeCycle;
+import hunt.util.Lifecycle;
 
 
-class SimpleWebSocketServer : AbstractLifeCycle {
+class SimpleWebSocketServer : AbstractLifecycle {
 
-    private Http2ServerBuilder serverBuilder;
+    private HttpServerBuilder serverBuilder;
 
     this() {
         this(new SimpleHttpServerConfiguration());
@@ -20,16 +20,16 @@ class SimpleWebSocketServer : AbstractLifeCycle {
 
     this(SimpleHttpServerConfiguration serverConfiguration,
                                  HttpBodyConfiguration httpBodyConfiguration) {
-        this.serverBuilder = new Http2ServerBuilder().httpServer(serverConfiguration, httpBodyConfiguration);
+        this.serverBuilder = new HttpServerBuilder().httpServer(serverConfiguration, httpBodyConfiguration);
         start();
     }
 
-    Http2ServerBuilder.WebSocketBuilder webSocket(string path) {
+    HttpServerBuilder.WebSocketBuilder webSocket(string path) {
         return serverBuilder.webSocket(path);
     }
 
     override
-    protected void initilize() {
+    protected void initialize() {
 
     }
 

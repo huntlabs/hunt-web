@@ -3,7 +3,7 @@ module hunt.web.router.impl.ContentTypePatternMatcher;
 import hunt.web.router.Matcher;
 
 import hunt.web.router.impl.AbstractPatternMatcher;
-import hunt.http.codec.http.model.MimeTypes;
+import hunt.util.MimeTypeUtils;
 import hunt.string;
 
 import std.range;
@@ -23,7 +23,7 @@ class ContentTypePatternMatcher : AbstractPatternMatcher {
 
     override
     MatchResult match(string value) {
-        string mimeType = MimeTypes.getContentTypeMIMEType(value);
+        string mimeType = MimeTypeUtils.getContentTypeMIMEType(value);
         if (!mimeType.empty()) {
             return super.match(mimeType);
         } else {

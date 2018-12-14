@@ -2,7 +2,7 @@ module test.http.router.handler.chain;
 
 import hunt.http.$;
 import hunt.http.client.http2.SimpleResponse;
-import hunt.web.server.Http2ServerBuilder;
+import hunt.web.server.HttpServerBuilder;
 import hunt.http.utils.concurrent.Promise;
 import hunt.util.Assert;
 import hunt.util.Test;
@@ -19,7 +19,7 @@ public class TestRouterChain extends AbstractHttpHandlerTest {
 
     
     public void testChain() {
-        Http2ServerBuilder httpServer = $.httpServer();
+        HttpServerBuilder httpServer = $.httpServer();
         httpServer.router().get("/routerChain").asyncHandler(ctx -> {
             ctx.setAttribute("reqId", 1000);
             ctx.write("enter router 1\r\n")

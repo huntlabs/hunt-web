@@ -1,13 +1,13 @@
 module hunt.web.router.SessionStore;
 
 import hunt.web.router.HttpSession;
-import hunt.util.LifeCycle;
+import hunt.util.Lifecycle;
 
 
 /**
  * 
  */
-interface SessionStore : LifeCycle {
+interface SessionStore : Lifecycle {
 
     bool remove(string key);
 

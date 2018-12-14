@@ -1,4 +1,4 @@
-module hunt.web.server.Http2ServerBuilder;
+module hunt.web.server.HttpServerBuilder;
 
 import hunt.web.server.SimpleHttpServer;
 import hunt.web.server.SimpleHttpServerConfiguration;
@@ -30,7 +30,7 @@ import hunt.util.functional;
 /**
  * 
  */
-class Http2ServerBuilder {
+class HttpServerBuilder {
 
     private static RoutingContext currentCtx; 
 
@@ -39,29 +39,28 @@ class Http2ServerBuilder {
     private Router currentRouter;
     private List!WebSocketBuilder webSocketBuilders; 
 
-    this()
-    {
+    this() {
         webSocketBuilders = new LinkedList!WebSocketBuilder();
     }
 
-    Http2ServerBuilder httpsServer() {
+    HttpServerBuilder httpsServer() {
         SimpleHttpServerConfiguration configuration = new SimpleHttpServerConfiguration();
         configuration.setSecureConnectionEnabled(true);
         return httpServer(configuration, new HttpBodyConfiguration());
     }
 
-    Http2ServerBuilder httpsServer(SecureSessionFactory secureSessionFactory) {
+    HttpServerBuilder httpsServer(SecureSessionFactory secureSessionFactory) {
         SimpleHttpServerConfiguration configuration = new SimpleHttpServerConfiguration();
         configuration.setSecureConnectionEnabled(true);
         configuration.setSecureSessionFactory(secureSessionFactory);
         return httpServer(configuration, new HttpBodyConfiguration());
     }
 
-    Http2ServerBuilder httpServer() {
+    HttpServerBuilder httpServer() {
         return httpServer(new SimpleHttpServerConfiguration(), new HttpBodyConfiguration());
     }
 
-    Http2ServerBuilder httpServer(SimpleHttpServerConfiguration serverConfiguration,
+    HttpServerBuilder httpServer(SimpleHttpServerConfiguration serverConfiguration,
                                          HttpBodyConfiguration httpBodyConfiguration) {
         AbstractErrorResponseHandler handler = DefaultErrorResponseHandlerLoader.getInstance().getHandler();
         server = new SimpleHttpServer(serverConfiguration);
@@ -80,14 +79,14 @@ class Http2ServerBuilder {
     /**
      * register a new router
      *
-     * @return Http2ServerBuilder
+     * @return HttpServerBuilder
      */
-    Http2ServerBuilder router() {
+    HttpServerBuilder router() {
         currentRouter = routerManager.register();
         return this;
     }
 
-    Http2ServerBuilder router(int id) {
+    HttpServerBuilder router(int id) {
         currentRouter = routerManager.register(id);
         return this;
     }
@@ -99,7 +98,7 @@ class Http2ServerBuilder {
     }
 
 
-    Http2ServerBuilder useCertificateFile(string certificate, string privateKey ) {
+    HttpServerBuilder useCertificateFile(string certificate, string privateKey ) {
         check();
         SimpleHttpServerConfiguration config = server.getConfiguration();
 
@@ -112,7 +111,7 @@ version(WithTLS) {
         return this;
     }
 
-    Http2ServerBuilder listen(string host, int port) {
+    HttpServerBuilder listen(string host, int port) {
         check();
         foreach(WebSocketBuilder b; webSocketBuilders) {
             b.listenWebSocket();
@@ -123,7 +122,7 @@ version(WithTLS) {
         return this;
     }
 
-    Http2ServerBuilder listen() {
+    HttpServerBuilder listen() {
         check();
         foreach(WebSocketBuilder b; webSocketBuilders) {
             b.listenWebSocket();
@@ -132,81 +131,81 @@ version(WithTLS) {
         return this;
     }
 
-    Http2ServerBuilder stop() {
+    HttpServerBuilder stop() {
         check();
         server.stop();
         return this;
     }
 
     // delegated Router methods
-    Http2ServerBuilder path(string url) {
+    HttpServerBuilder path(string url) {
         currentRouter.path(url);
         return this;
     }
 
-    Http2ServerBuilder paths(string[] paths) {
+    HttpServerBuilder paths(string[] paths) {
         currentRouter.paths(paths);
         return this;
     }
 
-    Http2ServerBuilder pathRegex(string regex) {
+    HttpServerBuilder pathRegex(string regex) {
         currentRouter.pathRegex(regex);
         return this;
     }
 
-    Http2ServerBuilder method(string method) {
+    HttpServerBuilder method(string method) {
         currentRouter.method(method);
         return this;
     }
 
-    Http2ServerBuilder methods(string[] methods) {
+    HttpServerBuilder methods(string[] methods) {
         foreach(string m; methods)
             this.method(m);
         return this;
     }
 
-    Http2ServerBuilder method(HttpMethod httpMethod) {
+    HttpServerBuilder method(HttpMethod httpMethod) {
         currentRouter.method(httpMethod);
         return this;
     }
 
-    Http2ServerBuilder methods(HttpMethod[] methods) {
+    HttpServerBuilder methods(HttpMethod[] methods) {
         foreach(HttpMethod m; methods)
             this.method(m);
         return this;
     }
 
-    Http2ServerBuilder get(string url) {
+    HttpServerBuilder get(string url) {
         currentRouter.get(url);
         return this;
     }
 
-    Http2ServerBuilder post(string url) {
+    HttpServerBuilder post(string url) {
         currentRouter.post(url);
         return this;
     }
 
-    Http2ServerBuilder put(string url) {
+    HttpServerBuilder put(string url) {
         currentRouter.put(url);
         return this;
     }
 
-    Http2ServerBuilder del(string url) {
+    HttpServerBuilder del(string url) {
         currentRouter.del(url);
         return this;
     }
 
-    Http2ServerBuilder consumes(string contentType) {
+    HttpServerBuilder consumes(string contentType) {
         currentRouter.consumes(contentType);
         return this;
     }
 
-    Http2ServerBuilder produces(string accept) {
+    HttpServerBuilder produces(string accept) {
         currentRouter.produces(accept);
         return this;
     }
 
-    Http2ServerBuilder handler(RoutingHandler handler) {
+    HttpServerBuilder handler(RoutingHandler handler) {
         currentRouter.handler( (RoutingContext ctx) { handlerWrap(handler, ctx); });
         // currentRouter.handler( new class Handler {
         //      void handle(RoutingContext ctx) { handlerWrap(handler, ctx); }
@@ -228,7 +227,7 @@ version(WithTLS) {
 
     // TODO: Tasks pending completion -@zxp at 10/23/2018, 4:10:54 PM
     // 
-    // Http2ServerBuilder asyncHandler(Handler handler) {
+    // HttpServerBuilder asyncHandler(Handler handler) {
     //     currentRouter.handler( (RoutingContext ctx) {
     //         ctx.getResponse().setAsynchronous(true);
     //         server.getHandlerExecutorService().execute(() -> handlerWrap(handler, ctx));
@@ -274,15 +273,15 @@ version(WithTLS) {
 
         alias onError = AbstractWebSocketBuilder.onError;
 
-        Http2ServerBuilder listen(string host, int port) {
+        HttpServerBuilder listen(string host, int port) {
             return this.outer.listen(host, port);
         }
 
-        Http2ServerBuilder listen() {
+        HttpServerBuilder listen() {
             return this.outer.listen();
         }
 
-        private Http2ServerBuilder listenWebSocket() {
+        private HttpServerBuilder listenWebSocket() {
             server.registerWebSocket(path, new class WebSocketHandler {
 
                 override
@@ -302,7 +301,9 @@ version(WithTLS) {
                 }
             });
 
-            router().path(path).handler( (ctx) { });
+            router().path(path).handler( (ctx) { 
+                version(HUNT_DEBUG) info("Do nothing");
+            });
             return this.outer;
         }
 

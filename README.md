@@ -1,3 +1,3 @@
 # hunt-web
 
-Some simple modules for web based on Hunt-HTTP.
+Some simple helper modules for web development based on Hunt-HTTP.

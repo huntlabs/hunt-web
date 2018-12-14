@@ -6,7 +6,7 @@ import hunt.http.codec.http.encode.UrlEncoded;
 import hunt.http.codec.http.model.HttpHeader;
 import hunt.http.codec.http.model.HttpStatus;
 import hunt.http.codec.http.stream.HttpOutputStream;
-import hunt.web.server.Http2ServerBuilder;
+import hunt.web.server.HttpServerBuilder;
 import hunt.http.utils.concurrent.Promise;
 import hunt.util.Assert;
 import hunt.util.Test;
@@ -25,7 +25,7 @@ import java.util.concurrent.Phaser;
  */
 public class TestHttpBodyHandler extends AbstractHttpHandlerTest {
 
-    public void testPostData(Http2ServerBuilder server, SimpleHttpClient client) {
+    public void testPostData(HttpServerBuilder server, SimpleHttpClient client) {
         StringBuilder bigData = new StringBuilder();
         int dataSize = 1024 * 1024;
         for (int i = 0; i < dataSize; i++) {
@@ -77,19 +77,19 @@ public class TestHttpBodyHandler extends AbstractHttpHandlerTest {
 
     
     public void testPostDataHttp2() {
-        Http2ServerBuilder server = $.httpsServer();
+        HttpServerBuilder server = $.httpsServer();
         SimpleHttpClient client = $.createHttpsClient();
         testPostData(server, client);
     }
 
     
     public void testPostDataHttp1() {
-        Http2ServerBuilder server = $.httpServer();
+        HttpServerBuilder server = $.httpServer();
         SimpleHttpClient client = $.createHttpClient();
         testPostData(server, client);
     }
 
-    public void testPostBigDataUsingChunkedEncoding(Http2ServerBuilder server, SimpleHttpClient client) {
+    public void testPostBigDataUsingChunkedEncoding(HttpServerBuilder server, SimpleHttpClient client) {
         StringBuilder bigData = new StringBuilder();
         int dataSize = 1024 * 1024;
         for (int i = 0; i < dataSize; i++) {
@@ -135,14 +135,14 @@ public class TestHttpBodyHandler extends AbstractHttpHandlerTest {
 
     
     public void testPostBigDataUsingChunkedEncodingHttp2() {
-        Http2ServerBuilder server = $.httpsServer();
+        HttpServerBuilder server = $.httpsServer();
         SimpleHttpClient client = $.createHttpsClient();
         testPostBigDataUsingChunkedEncoding(server, client);
     }
 
     
     public void testPostBigDataUsingChunkedEncodingHttp1() {
-        Http2ServerBuilder server = $.httpServer();
+        HttpServerBuilder server = $.httpServer();
         SimpleHttpClient client = $.createHttpClient();
         testPostBigDataUsingChunkedEncoding(server, client);
     }
@@ -151,7 +151,7 @@ public class TestHttpBodyHandler extends AbstractHttpHandlerTest {
     public void testPostForm() {
         Phaser phaser = new Phaser(3);
 
-        Http2ServerBuilder httpServer = $.httpServer();
+        HttpServerBuilder httpServer = $.httpServer();
         httpServer.router().post("/content/form").handler(ctx -> {
             Assert.assertThat(ctx.getParameter("name"), is("你的名字"));
             Assert.assertThat(ctx.getParameter("intro"), is("我要送些东西给你 我的孩子 因为我们同是漂泊在世界的溪流中的"));
@@ -178,7 +178,7 @@ public class TestHttpBodyHandler extends AbstractHttpHandlerTest {
     public void testQueryParam() {
         Phaser phaser = new Phaser(3);
 
-        Http2ServerBuilder httpServer = $.httpServer();
+        HttpServerBuilder httpServer = $.httpServer();
         httpServer.router().get("/query").handler(ctx -> {
             Assert.assertThat(ctx.getParameter("name"), is("你的名字"));
             Assert.assertThat(ctx.getParameter("intro"), is("我要送些东西给你 我的孩子 因为我们同是漂泊在世界的溪流中的"));
@@ -206,7 +206,7 @@ public class TestHttpBodyHandler extends AbstractHttpHandlerTest {
     public void testGetWithBody() {
         Phaser phaser = new Phaser(3);
 
-        Http2ServerBuilder httpServer = $.httpServer();
+        HttpServerBuilder httpServer = $.httpServer();
         httpServer.router().get("/queryWithBody").handler(ctx -> {
             string body = ctx.getStringBody();
             writeln(body);

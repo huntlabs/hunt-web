@@ -1,8 +1,9 @@
 module hunt.web.router.impl.ContentTypePreciseMatcher;
 
 import hunt.web.router.impl.AbstractPreciseMatcher;
-import hunt.http.codec.http.model.MimeTypes;
+import hunt.util.MimeTypeUtils;
 import hunt.string;
+
 
 import hunt.web.router.Matcher;
 import std.range;
@@ -22,7 +23,7 @@ class ContentTypePreciseMatcher : AbstractPreciseMatcher {
 
     override
     MatchResult match(string value) {
-        string mimeType = MimeTypes.getContentTypeMIMEType(value);
+        string mimeType = MimeTypeUtils.getContentTypeMIMEType(value);
         if (!mimeType.empty()) {
             return super.match(mimeType);
         } else {

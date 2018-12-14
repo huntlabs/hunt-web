@@ -1,16 +1,16 @@
 
 import hunt.http.codec.http.model.HttpHeader;
 import hunt.http.codec.http.model.HttpStatus;
-import hunt.http.codec.http.model.MimeTypes;
+import hunt.util.MimeTypeUtils;
 
 import hunt.web.server.SimpleHttpServer;
 import hunt.web.server.SimpleRequest;
 import hunt.web.server.SimpleResponse;
 
 import hunt.container;
-import hunt.string;
-
 import hunt.logging;
+import hunt.string;
+import hunt.util.MimeType;
 
 import std.conv;
 import std.datetime;
@@ -41,7 +41,7 @@ void main(string[] args)
 
                    trace("path=", path);
 
-                   response.getResponse().getFields().put(HttpHeader.CONTENT_TYPE, MimeTypes.Type.TEXT_PLAIN.asString());
+                   response.getResponse().getFields().put(HttpHeader.CONTENT_TYPE, MimeType.TEXT_PLAIN.asString());
 
                    switch (path) {
                        case "/":
@@ -49,7 +49,7 @@ void main(string[] args)
                            trace(request.getRequest().getFields());
                            string msg = BufferUtils.toString(list);
                            trace(msg); // TODO:
-                           msg = "server demo 4. " ~ Clock.currTime.toISOExtString();
+                           msg = "http server demo 4. " ~ Clock.currTime.toISOExtString();
 						   response.write(msg);
 
                         //    response.getResponse().getFields().put(HttpHeader.CONTENT_LENGTH, msg.length.to!string);

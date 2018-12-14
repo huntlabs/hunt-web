@@ -4,7 +4,7 @@ import hunt.http.$;
 import hunt.http.codec.http.model.HttpFields;
 import hunt.http.codec.http.model.HttpHeader;
 import hunt.http.codec.http.model.HttpStatus;
-import hunt.web.server.Http2ServerBuilder;
+import hunt.web.server.HttpServerBuilder;
 import hunt.web.router.handler.file.StaticFileHandler;
 import hunt.util.Assert;
 import hunt.util.Test;
@@ -26,7 +26,7 @@ public class TestStaticFileHandler extends AbstractHttpHandlerTest {
     public void test() throws URISyntaxException {
         Phaser phaser = new Phaser(4);
 
-        Http2ServerBuilder httpServer = $.httpServer();
+        HttpServerBuilder httpServer = $.httpServer();
         Path path = Paths.get(TestStaticFileHandler.class.getResource("/").toURI());
         writeln(path.toAbsolutePath());
         StaticFileHandler staticFileHandler = new StaticFileHandler(path.toAbsolutePath().toString());

@@ -4,14 +4,14 @@ version(WithTLS) :
 
 import hunt.web.client.SimpleWebSocketClient;
 import hunt.web.client.SimpleHttpClientConfiguration;
-import hunt.util.LifeCycle;
+import hunt.util.Lifecycle;
 
 import hunt.container.Collections;
 
 /**
  * 
  */
-class SecureWebSocketClientSingleton : AbstractLifeCycle {
+class SecureWebSocketClientSingleton : AbstractLifecycle {
     private __gshared SecureWebSocketClientSingleton ourInstance;
 
     shared static this() {
@@ -33,7 +33,7 @@ class SecureWebSocketClientSingleton : AbstractLifeCycle {
     }
 
     override
-    protected void initilize() {
+    protected void initialize() {
         SimpleHttpClientConfiguration http2Configuration = new SimpleHttpClientConfiguration();
         http2Configuration.setSecureConnectionEnabled(true);
         http2Configuration.getSecureSessionFactory().setSupportedProtocols(["http/1.1"]);

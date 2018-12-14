@@ -23,7 +23,7 @@ import hunt.logging;
 import hunt.string;
 import hunt.util.concurrent.CompletableFuture;
 import hunt.util.concurrent.Promise;
-import hunt.util.LifeCycle;
+import hunt.util.Lifecycle;
 
 import std.string;
 
@@ -31,7 +31,7 @@ import std.string;
 /**
  * 
  */
-class SimpleWebSocketClient : AbstractLifeCycle {
+class SimpleWebSocketClient : AbstractLifecycle {
     private HttpClient httpClient;
 
     this() {
@@ -170,7 +170,7 @@ class SimpleWebSocketClient : AbstractLifeCycle {
     }
 
     override
-    protected void initilize() {
+    protected void initialize() {
     }
 
     override

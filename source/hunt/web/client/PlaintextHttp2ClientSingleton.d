@@ -4,12 +4,12 @@ import hunt.web.client.SimpleHttpClient;
 import hunt.web.client.SimpleHttpClientConfiguration;
 
 import hunt.http.codec.http.model.HttpVersion;
-// import hunt.http.utils.lang.AbstractLifeCycle;
+// import hunt.http.utils.lang.AbstractLifecycle;
 
 /**
  * 
  */
-class PlaintextHttp2ClientSingleton { // : AbstractLifeCycle 
+class PlaintextHttp2ClientSingleton { // : AbstractLifecycle 
 
     private __gshared PlaintextHttp2ClientSingleton ourInstance; //  = new PlaintextHttp2ClientSingleton();
 

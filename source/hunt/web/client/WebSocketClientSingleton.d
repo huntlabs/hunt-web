@@ -1,12 +1,12 @@
 module hunt.web.client.WebSocketClientSingleton;
 
 import hunt.web.client.SimpleWebSocketClient;
-import hunt.util.LifeCycle;
+import hunt.util.Lifecycle;
 
 /**
  * 
  */
-public class WebSocketClientSingleton : AbstractLifeCycle {
+public class WebSocketClientSingleton : AbstractLifecycle {
 
     private __gshared WebSocketClientSingleton ourInstance;
 
@@ -29,7 +29,7 @@ public class WebSocketClientSingleton : AbstractLifeCycle {
     }
 
     override
-    protected void initilize() {
+    protected void initialize() {
         _client = new SimpleWebSocketClient();
     }
 

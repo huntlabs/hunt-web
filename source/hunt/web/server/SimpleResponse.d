@@ -112,7 +112,7 @@ class SimpleResponse : Closeable {
             bufferedOutputStream.close();
         } 
         else {
-            getOutputStream().close();
+            output.close();
         }
     }
 
@@ -190,7 +190,7 @@ class SimpleResponse : Closeable {
     }
 
     SimpleResponse end() {
-        // IO.close(this);
+        // IOUtils.close(this);
         try {
             this.close();
         }

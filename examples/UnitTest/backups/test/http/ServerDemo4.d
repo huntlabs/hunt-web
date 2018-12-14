@@ -2,7 +2,7 @@ module test.http;
 
 import hunt.http.codec.http.model.HttpHeader;
 import hunt.http.codec.http.model.HttpStatus;
-import hunt.http.codec.http.model.MimeTypes;
+import hunt.util.MimeTypeUtils;
 import hunt.web.server.SimpleHttpServer;
 import hunt.web.server.SimpleResponse;
 import hunt.container.BufferUtils;

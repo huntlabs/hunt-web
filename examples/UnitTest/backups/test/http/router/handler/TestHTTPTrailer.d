@@ -7,7 +7,7 @@ import hunt.http.codec.http.model.HttpFields;
 import hunt.http.codec.http.model.HttpHeader;
 import hunt.http.codec.http.model.HttpStatus;
 import hunt.http.codec.http.stream.HttpOutputStream;
-import hunt.web.server.Http2ServerBuilder;
+import hunt.web.server.HttpServerBuilder;
 import hunt.web.server.SimpleHttpServerConfiguration;
 import hunt.container.BufferUtils;
 import hunt.util.Assert;
@@ -27,7 +27,7 @@ public class TestHTTPTrailer extends AbstractHttpHandlerTest {
     public void test() {
         Phaser phaser = new Phaser(3);
 
-        Http2ServerBuilder httpServer = $.httpServer();
+        HttpServerBuilder httpServer = $.httpServer();
         startHttpServer(httpServer);
 
         SimpleHttpClient httpClient = $.createHttpClient();
@@ -45,7 +45,7 @@ public class TestHTTPTrailer extends AbstractHttpHandlerTest {
 
         SimpleHttpServerConfiguration serverConfiguration = new SimpleHttpServerConfiguration();
         serverConfiguration.setSecureConnectionEnabled(true);
-        Http2ServerBuilder httpsServer = $.httpServer(serverConfiguration);
+        HttpServerBuilder httpsServer = $.httpServer(serverConfiguration);
         startHttpServer(httpsServer);
 
         SimpleHttpClientConfiguration clientConfiguration = new SimpleHttpClientConfiguration();
@@ -97,7 +97,7 @@ public class TestHTTPTrailer extends AbstractHttpHandlerTest {
         });
     }
 
-    private void startHttpServer(Http2ServerBuilder httpServer) {
+    private void startHttpServer(HttpServerBuilder httpServer) {
         httpServer.router().get("/trailer").handler(ctx -> {
             writeln("get request");
             ctx.put(HttpHeader.CONTENT_TYPE, "text/plain");

@@ -2,7 +2,7 @@ module test.http.router.handler.body;
 
 import hunt.http.$;
 import hunt.http.codec.http.model;
-import hunt.web.server.Http2ServerBuilder;
+import hunt.web.server.HttpServerBuilder;
 import hunt.util.Assert;
 import hunt.util.Test;
 import test.http.router.handler.AbstractHttpHandlerTest;
@@ -90,7 +90,7 @@ public class TestMultiPartContentProvider extends AbstractHttpHandlerTest {
     public void testMultiPart() {
         Phaser phaser = new Phaser(3);
 
-        Http2ServerBuilder httpServer = $.httpServer();
+        HttpServerBuilder httpServer = $.httpServer();
         httpServer.router().post("/upload/string").handler(ctx -> {
             // small multi part data test case
             Assert.assertThat(ctx.getParts().size(), is(2));

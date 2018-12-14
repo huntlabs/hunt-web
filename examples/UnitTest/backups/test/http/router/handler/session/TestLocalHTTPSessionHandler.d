@@ -2,7 +2,7 @@ module test.http.router.handler.session;
 
 import hunt.http.$;
 import hunt.http.codec.http.model.Cookie;
-import hunt.web.server.Http2ServerBuilder;
+import hunt.web.server.HttpServerBuilder;
 import hunt.web.router.HttpSession;
 import hunt.web.router.handler.session.HttpSessionConfiguration;
 import hunt.web.router.handler.session.LocalHttpSessionHandler;
@@ -24,7 +24,7 @@ public class TestLocalHttpSessionHandler extends AbstractHttpHandlerTest {
     public void test() {
         int maxGetSession = 3;
         Phaser phaser = new Phaser(1 + maxGetSession);
-        Http2ServerBuilder httpsServer = $.httpsServer();
+        HttpServerBuilder httpsServer = $.httpsServer();
         LocalHttpSessionHandler sessionHandler = new LocalHttpSessionHandler(new HttpSessionConfiguration());
         httpsServer.router().path("*").handler(sessionHandler)
                    .router().post("/session/:name")

@@ -2,7 +2,7 @@ module test.http.router.handler.error;
 
 import hunt.http.$;
 import hunt.http.codec.http.model.HttpStatus;
-import hunt.web.server.Http2ServerBuilder;
+import hunt.web.server.HttpServerBuilder;
 import hunt.util.Assert;
 import hunt.util.Test;
 import test.http.router.handler.AbstractHttpHandlerTest;
@@ -20,7 +20,7 @@ public class TestErrorHandler extends AbstractHttpHandlerTest {
     public void test() {
         Phaser phaser = new Phaser(3);
 
-        Http2ServerBuilder httpServer = $.httpServer();
+        HttpServerBuilder httpServer = $.httpServer();
         httpServer.router().get("/").handler(ctx -> ctx.write("hello world! ").next())
                   .router().get("/").handler(ctx -> ctx.end("end message"))
                   .listen(host, port);

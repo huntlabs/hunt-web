@@ -4,7 +4,7 @@ import hunt.http.$;
 import hunt.http.client.http2.SimpleHttpClient;
 import hunt.http.client.http2.SimpleHttpClientConfiguration;
 import hunt.http.codec.http.model.HttpHeader;
-import hunt.http.codec.http.model.MimeTypes;
+import hunt.util.MimeTypeUtils;
 import hunt.web.server.SimpleHttpServer;
 import hunt.web.server.SimpleHttpServerConfiguration;
 import hunt.web.server.SimpleResponse;

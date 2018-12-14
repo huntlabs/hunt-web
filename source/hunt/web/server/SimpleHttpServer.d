@@ -20,13 +20,13 @@ import hunt.lang.Charset;
 import hunt.lang.common;
 import hunt.lang.exception;
 import hunt.io;
-import hunt.util.LifeCycle;
+import hunt.util.Lifecycle;
 
 /**
 */
-class SimpleHttpServer : AbstractLifeCycle { 
+class SimpleHttpServer : AbstractLifecycle { 
 
-    private static  int defaultPoolSize = 10; // int.getInteger("hunt.web.server.async.defaultPoolSize", Runtime.getRuntime().availableProcessors());
+    private static  int defaultPoolSize = 10; 
 
     private HttpServer httpServer;
     private SimpleHttpServerConfiguration configuration;
@@ -48,7 +48,6 @@ class SimpleHttpServer : AbstractLifeCycle {
     }
 
     this(SimpleHttpServerConfiguration configuration) {
-        // webSocketHandlerMap = new HashMap!(string, WebSocketHandler)();
         this.configuration = configuration;
         // TODO: Tasks pending completion -@zxp at 7/5/2018, 2:59:11 PM
         // 
@@ -121,14 +120,12 @@ class SimpleHttpServer : AbstractLifeCycle {
     }
 
     override
-    protected void initilize() {
+    protected void initialize() {
         SimpleWebSocketHandler webSocketHandler = new SimpleWebSocketHandler();
         webSocketHandler.setWebSocketPolicy(_webSocketPolicy);
 
-        httpServer = new HttpServer(configuration.getHost(), configuration.getPort(), configuration, 
-            buildAdapter(), 
-            webSocketHandler
-            ); // 
+        httpServer = new HttpServer(configuration.getHost(), configuration.getPort(), 
+            configuration, buildAdapter(), webSocketHandler); // 
 
         httpServer.start();
     }
@@ -172,7 +169,7 @@ class SimpleHttpServer : AbstractLifeCycle {
                     r.messageComplete(r);
                 }
                 if (!r.getResponse().isAsynchronous()) {
-                    IO.close(r.getResponse());
+                    IOUtils.close(r.getResponse());
                 }
                 return true;
             }).badMessage((status, reason, request, response, ot, connection)  {
@@ -219,14 +216,18 @@ class SimpleHttpServer : AbstractLifeCycle {
         override
         bool acceptUpgrade(HttpRequest request, HttpResponse response, 
             HttpOutputStream output, HttpConnection connection) {
-                
-            WebSocketHandler handler = webSocketHandlerMap.get(request.getURI().getPath(), null);
+            version(HUNT_DEBUG) {
+                info("The connection %s will upgrade to WebSocket connection",
+                    connection.getSessionId());
+            }
+            string path = request.getURI().getPath();
+            WebSocketHandler handler = webSocketHandlerMap.get(path, null);
             if (handler is null) {
                 response.setStatus(HttpStatus.BAD_REQUEST_400);
                 try {
-                    output.write(cast(byte[])("The " ~ 
-                        request.getURI().getPath() ~ " can not upgrade to WebSocket"));
-                } catch (IOException e) {
+                    output.write(cast(byte[])("The " ~ path 
+                        ~ " can not upgrade to WebSocket"));
+                }catch (IOException e) {
                     errorf("Write http message exception", e);
                 }
                 return false;

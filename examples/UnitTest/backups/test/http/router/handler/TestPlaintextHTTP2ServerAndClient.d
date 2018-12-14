@@ -2,7 +2,7 @@ module test.http.router.handler;
 
 import hunt.http.$;
 import hunt.http.client.http2.SimpleHttpClient;
-import hunt.web.server.Http2ServerBuilder;
+import hunt.web.server.HttpServerBuilder;
 import hunt.util.Assert;
 import hunt.util.Test;
 
@@ -20,7 +20,7 @@ public class TestPlaintextHttp2ServerAndClient extends AbstractHttpHandlerTest {
         int times = 10;
         CountDownLatch latch = new CountDownLatch(times);
 
-        Http2ServerBuilder server = $.plaintextHttp2Server();
+        HttpServerBuilder server = $.plaintextHttp2Server();
         server.router().post("/plaintextHttp2").handler(ctx -> {
             writeln("Server: " ~
                     ctx.getHttpVersion().asString() ~ "\r\n" ~

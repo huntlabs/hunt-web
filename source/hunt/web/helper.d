@@ -7,7 +7,7 @@ import hunt.web.client.SimpleResponse;
 import hunt.web.client.SimpleWebSocketClient;
 import hunt.web.client.WebSocketClientSingleton;
 
-import hunt.web.server.Http2ServerBuilder;
+import hunt.web.server.HttpServerBuilder;
 import hunt.web.server.SimpleHttpServer;
 import hunt.web.server.SimpleHttpServerConfiguration;
 import hunt.web.server.SimpleWebSocketServer;
@@ -103,8 +103,8 @@ SimpleHttpClient createHttpClient(SimpleHttpClientConfiguration configuration) {
  *
  * @return HTTP server builder.
  */
-Http2ServerBuilder httpServer() {
-    return new Http2ServerBuilder().httpServer();
+HttpServerBuilder httpServer() {
+    return new HttpServerBuilder().httpServer();
 }
 
 /**
@@ -112,7 +112,7 @@ Http2ServerBuilder httpServer() {
  *
  * @return HTTP server builder.
  */
-Http2ServerBuilder plaintextHttp2Server() {
+HttpServerBuilder plaintextHttp2Server() {
     SimpleHttpServerConfiguration configuration = new SimpleHttpServerConfiguration();
     configuration.setProtocol(HttpVersion.HTTP_2.asString());
     return httpServer(configuration);
@@ -124,7 +124,7 @@ Http2ServerBuilder plaintextHttp2Server() {
  * @param serverConfiguration The server configuration.
  * @return HTTP server builder
  */
-Http2ServerBuilder httpServer(SimpleHttpServerConfiguration serverConfiguration) {
+HttpServerBuilder httpServer(SimpleHttpServerConfiguration serverConfiguration) {
     return httpServer(serverConfiguration, new HttpBodyConfiguration());
 }
 
@@ -135,9 +135,9 @@ Http2ServerBuilder httpServer(SimpleHttpServerConfiguration serverConfiguration)
  * @param httpBodyConfiguration HTTP body process configuration.
  * @return HTTP server builder.
  */
-Http2ServerBuilder httpServer(SimpleHttpServerConfiguration serverConfiguration,
+HttpServerBuilder httpServer(SimpleHttpServerConfiguration serverConfiguration,
                                      HttpBodyConfiguration httpBodyConfiguration) {
-    return new Http2ServerBuilder().httpServer(serverConfiguration, httpBodyConfiguration);
+    return new HttpServerBuilder().httpServer(serverConfiguration, httpBodyConfiguration);
 }
 
 
@@ -146,8 +146,8 @@ Http2ServerBuilder httpServer(SimpleHttpServerConfiguration serverConfiguration,
  *
  * @return HTTP server builder.
  */
-Http2ServerBuilder httpsServer() {
-    return new Http2ServerBuilder().httpsServer();
+HttpServerBuilder httpsServer() {
+    return new HttpServerBuilder().httpsServer();
 }
 
 /**
@@ -228,8 +228,8 @@ import hunt.net.secure.SecureSessionFactory;
  * @param secureSessionFactory The secure session factory. We provide JDK or OpenSSL secure session factory.
  * @return HTTP server builder.
  */
-Http2ServerBuilder httpsServer(SecureSessionFactory secureSessionFactory) {
-    return new Http2ServerBuilder().httpsServer(secureSessionFactory);
+HttpServerBuilder httpsServer(SecureSessionFactory secureSessionFactory) {
+    return new HttpServerBuilder().httpsServer(secureSessionFactory);
 }
 
 /**

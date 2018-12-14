@@ -3,12 +3,12 @@ module hunt.web.client.HttpsClientSingleton;
 import hunt.web.client.SimpleHttpClient;
 import hunt.web.client.SimpleHttpClientConfiguration;
 
-// import hunt.http.utils.lang.AbstractLifeCycle;
+// import hunt.http.utils.lang.AbstractLifecycle;
 
 /**
  * 
  */
-class HttpsClientSingleton { // : AbstractLifeCycle 
+class HttpsClientSingleton { // : AbstractLifecycle 
     private __gshared HttpsClientSingleton ourInstance; // = new HttpsClientSingleton();
 
     shared static this()

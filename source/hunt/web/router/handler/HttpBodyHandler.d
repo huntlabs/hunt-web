@@ -14,6 +14,7 @@ import hunt.io;
 import hunt.lang.exception;
 import hunt.logging;
 import hunt.string;
+import hunt.util.MimeTypeUtils;
 
 import std.array;
 
@@ -91,7 +92,7 @@ class HttpBodyHandler : Handler {
                     // if (chunkedEncodingContentLength.addAndGet(buf.remaining()) > configuration.getBodyBufferThreshold()
                     //         && httpBodyHandlerSPI.pipedStream instanceof ByteArrayPipedStream) {
                     //     // chunked encoding content dump to temp file
-                    //     IO.close(httpBodyHandlerSPI.pipedStream.getOutputStream());
+                    //     IOUtils.close(httpBodyHandlerSPI.pipedStream.getOutputStream());
                     //     FilePipedStream filePipedStream = new FilePipedStream(configuration.getTempFilePath());
                     //     IO.copy(httpBodyHandlerSPI.pipedStream.getInputStream(), filePipedStream.getOutputStream());
                     //     filePipedStream.getOutputStream().write(BufferUtils.toArray(buf));
@@ -107,7 +108,7 @@ class HttpBodyHandler : Handler {
             }
         }).onContentComplete( (SimpleRequest req) {
             try {
-                string contentType = MimeTypes.getContentTypeMIMEType(request.getFields().get(HttpHeader.CONTENT_TYPE));
+                string contentType = MimeTypeUtils.getContentTypeMIMEType(request.getFields().get(HttpHeader.CONTENT_TYPE));
                 httpBodyHandlerSPI.pipedStream.getOutputStream().close();
 
                 if ("application/x-www-form-urlencoded".equalsIgnoreCase(contentType)) {

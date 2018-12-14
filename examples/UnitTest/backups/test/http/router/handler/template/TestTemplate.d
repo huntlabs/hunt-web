@@ -3,7 +3,7 @@ module test.http.router.handler.template;
 import hunt.http.$;
 import hunt.http.codec.http.model.HttpHeader;
 import hunt.http.codec.http.model.HttpStatus;
-import hunt.web.server.Http2ServerBuilder;
+import hunt.web.server.HttpServerBuilder;
 import hunt.util.Assert;
 import hunt.util.Test;
 import test.http.router.handler.AbstractHttpHandlerTest;
@@ -22,7 +22,7 @@ public class TestTemplate extends AbstractHttpHandlerTest {
     public void test() {
         Phaser phaser = new Phaser(2);
 
-        Http2ServerBuilder httpServer = $.httpServer();
+        HttpServerBuilder httpServer = $.httpServer();
         httpServer.router().get("/example").handler(ctx -> {
             ctx.put(HttpHeader.CONTENT_TYPE, "text/plain");
             ctx.renderTemplate("template/example.mustache", new Example());
