@@ -5,6 +5,9 @@
 		},
 		{
 			"path": "examples/WebSocketDemo"
+		},
+		{
+			"path": "examples/TLS-Demo"
 		}
 	],
 	"settings": {}

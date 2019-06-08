@@ -16,9 +16,9 @@ import hunt.util.runners.Parameterized.Parameter;
 import hunt.util.runners.Parameterized.Parameters;
 
 import java.io.PrintWriter;
-import hunt.container.ArrayList;
+import hunt.collection.ArrayList;
 import java.util.Collection;
-import hunt.container.List;
+import hunt.collection.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Phaser;
 import java.util.concurrent.atomic.AtomicInteger;

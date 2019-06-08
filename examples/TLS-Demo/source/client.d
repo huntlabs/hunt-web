@@ -4,14 +4,14 @@ import hunt.http.codec.http.model;
 import hunt.web.client.SimpleHttpClient;
 import hunt.web.client.SimpleResponse;
 
-import hunt.util.concurrent.Promise;
-import hunt.util.concurrent.CompletableFuture;
+import hunt.concurrency.Promise;
+import hunt.concurrency.CompletableFuture;
 
 import hunt.net.secure.SecureSessionFactory;
 import hunt.net.secure.conscrypt;
 
 import hunt.web.helper;
-import hunt.datetime;
+import hunt.util.DateTime;
 import hunt.logging;
 
 import std.datetime;
@@ -28,8 +28,8 @@ void main(string[] args) {
 // string[] urlList = ["https://www.putao.com/",
 //             "https://segmentfault.com"];
 
-// string[] urlList = ["https://10.1.222.120:446/"];
-string[] urlList = ["https://127.0.0.1:8081/"];
+string[] urlList = ["https://10.1.222.120:444/"];
+// string[] urlList = ["https://127.0.0.1:8081/"];
 
 long getMillisecond(long v)
 {

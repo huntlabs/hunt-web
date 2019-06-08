@@ -3,10 +3,10 @@ module hunt.web.server.SimpleResponse;
 import hunt.http.codec.http.model;
 import hunt.http.codec.http.stream.HttpOutputStream;
 
-import hunt.lang.exception;
-import hunt.util.functional;
+import hunt.Exceptions;
+import hunt.Functions;
 import hunt.io;
-import hunt.lang.common;
+import hunt.util.Common;
 
 import hunt.logging;
 import std.range;

@@ -1,12 +1,12 @@
 module hunt.web.client.SecureWebSocketClientSingleton;
 
-version(WithTLS) :
+version(WITH_HUNT_SECURITY) :
 
 import hunt.web.client.SimpleWebSocketClient;
 import hunt.web.client.SimpleHttpClientConfiguration;
 import hunt.util.Lifecycle;
 
-import hunt.container.Collections;
+import hunt.collection.Collections;
 
 /**
  * 

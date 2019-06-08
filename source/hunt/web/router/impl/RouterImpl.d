@@ -10,10 +10,10 @@ import hunt.web.router.Router;
 
 import hunt.web.router.impl.RouterManagerImpl;
 
-import hunt.container;
+import hunt.collection;
 import hunt.util.Comparator;
-import hunt.lang.exception;
-import hunt.string;
+import hunt.Exceptions;
+import hunt.text;
 
 import std.algorithm;
 import std.array;

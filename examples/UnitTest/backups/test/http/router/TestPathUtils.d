@@ -4,7 +4,7 @@ import hunt.web.router.utils.PathUtils;
 import hunt.util.Assert;
 import hunt.util.Test;
 
-import hunt.container.List;
+import hunt.collection.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

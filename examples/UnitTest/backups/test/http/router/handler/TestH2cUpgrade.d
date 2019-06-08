@@ -3,23 +3,23 @@ module test.http.router.handler;
 import hunt.http.client.http2;
 import hunt.http.codec.http.frame.SettingsFrame;
 import hunt.http.codec.http.model;
-import hunt.http.codec.http.stream.Http2Configuration;
+import hunt.http.codec.http.stream.HttpConfiguration;
 import hunt.http.codec.http.stream.HttpConnection;
 import hunt.http.codec.http.stream.HttpOutputStream;
 import hunt.web.server.HttpServer;
 import hunt.web.server.ServerHttpHandler;
 import hunt.http.utils.concurrent.FuturePromise;
-import hunt.container.BufferUtils;
+import hunt.collection.BufferUtils;
 import hunt.util.Assert;
 import hunt.util.Test;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import hunt.container.ByteBuffer;
+import hunt.collection.ByteBuffer;
 import java.nio.charset.StandardCharsets;
-import hunt.container.ArrayList;
+import hunt.collection.ArrayList;
 import java.util.HashMap;
-import hunt.container.List;
+import hunt.collection.List;
 import java.util.Map;
 import java.util.concurrent.Phaser;
 
@@ -127,13 +127,13 @@ public class TestH2cUpgrade extends AbstractHttpHandlerTest {
     }
 
     private HttpClient createClient() {
-        final Http2Configuration config = new Http2Configuration();
+        final HttpConfiguration config = new HttpConfiguration();
         config.getTcpConfiguration().setTimeout(timeout);
         config.getTcpConfiguration().setAsynchronousCorePoolSize(corePoolSize);
         return new HttpClient(config);
     }
 
-    private Http2ClientConnection upgradeHttp2(Http2Configuration http2Configuration, HttpClientConnection httpConnection) {
+    private Http2ClientConnection upgradeHttp2(HttpConfiguration http2Configuration, HttpClientConnection httpConnection) {
         HttpClientRequest request = new HttpClientRequest("GET", "/index");
 
         Map<Integer, Integer> settings = new HashMap<>();
@@ -250,7 +250,7 @@ public class TestH2cUpgrade extends AbstractHttpHandlerTest {
     }
 
     private HttpServer createServer() {
-        final Http2Configuration config = new Http2Configuration();
+        final HttpConfiguration config = new HttpConfiguration();
         config.getTcpConfiguration().setTimeout(timeout);
         config.getTcpConfiguration().setAsynchronousCorePoolSize(corePoolSize);
         HttpServer server = new HttpServer(host, port, config, new ServerHttpHandlerAdapter() {

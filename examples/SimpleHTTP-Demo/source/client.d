@@ -2,8 +2,8 @@
 import hunt.web.client.SimpleHttpClient;
 import hunt.web.client.SimpleResponse;
 
-import hunt.util.concurrent.Promise;
-import hunt.util.concurrent.CompletableFuture;
+import hunt.concurrency.Promise;
+import hunt.concurrency.CompletableFuture;
 
 import hunt.logging;
 

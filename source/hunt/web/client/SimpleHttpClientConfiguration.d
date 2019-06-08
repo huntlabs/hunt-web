@@ -1,13 +1,13 @@
 module hunt.web.client.SimpleHttpClientConfiguration;
 
-import hunt.http.codec.http.stream.Http2Configuration;
+import hunt.http.codec.http.stream.HttpConfiguration;
 // import hunt.http.utils.ServiceUtils;
 // import hunt.http.utils.heartbeat.HealthCheck;
 
 /**
  * 
  */
-class SimpleHttpClientConfiguration : Http2Configuration {
+class SimpleHttpClientConfiguration : HttpConfiguration {
 
     enum int defaultPoolSize = 16; // Integer.getInteger("hunt.web.client.connection.defaultPoolSize", 16);
     enum long defaultConnectTimeout = 10 * 1000L; // Long.getLong("hunt.web.client.connection.defaultConnectTimeout", 10 * 1000L);

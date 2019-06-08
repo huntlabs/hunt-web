@@ -16,8 +16,8 @@ import hunt.web.router.handler.HttpBodyHandler;
 
 import hunt.http.codec.http.model.HttpVersion;
 
-import hunt.util.concurrent.Promise;
-import hunt.util.concurrent.CompletableFuture;
+import hunt.concurrency.Promise;
+import hunt.concurrency.CompletableFuture;
 
 private __gshared SimpleHttpClient _httpClient;
 private __gshared SimpleHttpClient _httpsClient;
@@ -194,7 +194,7 @@ static SimpleWebSocketServer createWebSocketServer(SimpleHttpServerConfiguration
  *
  * @return The websocket client singleton.
  */
-static SimpleWebSocketClient webSocketClient() {
+SimpleWebSocketClient webSocketClient() {
     return WebSocketClientSingleton.getInstance().webSocketClient();
 }
 
@@ -203,7 +203,7 @@ static SimpleWebSocketClient webSocketClient() {
  *
  * @return A new WebSocket client.
  */
-static SimpleWebSocketClient createWebSocketClient() {
+SimpleWebSocketClient createWebSocketClient() {
     return new SimpleWebSocketClient();
 }
 
@@ -213,12 +213,12 @@ static SimpleWebSocketClient createWebSocketClient() {
  * @param config The WebSocket client configuration.
  * @return A new WebSocket client.
  */
-static SimpleWebSocketClient createWebSocketClient(SimpleHttpClientConfiguration config) {
+SimpleWebSocketClient createWebSocketClient(SimpleHttpClientConfiguration config) {
     return new SimpleWebSocketClient(config);
 }
 
 
-version(WithTLS) {
+version(WITH_HUNT_SECURITY) {
 
 import hunt.net.secure.SecureSessionFactory;
 
@@ -263,7 +263,7 @@ static SimpleWebSocketServer createSecureWebSocketServer() {
  *
  * @return A new secure WebSocket client.
  */
-static SimpleWebSocketClient createSecureWebSocketClient() {
+SimpleWebSocketClient createSecureWebSocketClient() {
     SimpleHttpClientConfiguration http2Configuration = new SimpleHttpClientConfiguration();
     http2Configuration.setSecureConnectionEnabled(true);
     http2Configuration.getSecureSessionFactory().setSupportedProtocols(["http/1.1"]);
@@ -276,7 +276,7 @@ static SimpleWebSocketClient createSecureWebSocketClient() {
  *
  * @return The secure WebSocket client singleton.
  */
-static SimpleWebSocketClient secureWebSocketClient() {
+SimpleWebSocketClient secureWebSocketClient() {
     return SecureWebSocketClientSingleton.getInstance().secureWebSocketClient();
 }
 

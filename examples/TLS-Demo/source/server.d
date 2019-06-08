@@ -4,10 +4,12 @@ import hunt.web.router.RoutingContext;
 import hunt.web.helper;
 
 import hunt.logging;
+import hunt.util.DateTime;
 
 import std.file;
 import std.path;
 import std.stdio;
+import core.time;
 
 
 /**
@@ -28,7 +30,7 @@ void main(string[] args)
     // httpServer() // For HTTP
     .router().get("/").handler((RoutingContext ctx) {
         info("Resposing a HTTP request.");
-        ctx.end("hello world!");
+        ctx.end("Hello world! " ~ DateTimeHelper.getTimeAsGMT());
     }) //  .router().get("/static/*").handler(new StaticFileHandler(path.toAbsolutePath().toString()))
     .listen("0.0.0.0", 8081);
 }

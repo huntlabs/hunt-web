@@ -1,8 +1,8 @@
 module hunt.web.server.SimpleHttpServerConfiguration;
 
-import hunt.http.codec.http.stream.Http2Configuration;
+import hunt.http.codec.http.stream.HttpConfiguration;
 
-class SimpleHttpServerConfiguration : Http2Configuration {
+class SimpleHttpServerConfiguration : HttpConfiguration {
 
     private string host;
     private int port;

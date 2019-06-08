@@ -15,14 +15,17 @@ import hunt.http.codec.websocket.stream.AbstractWebSocketBuilder;
 import hunt.http.codec.websocket.stream.WebSocketConnection;
 import hunt.http.codec.websocket.stream.WebSocketPolicy;
 
-import hunt.container.ByteBuffer;
-import hunt.container.List;
-import hunt.lang.common;
-import hunt.lang.exception;
+import hunt.http.util.Completable;
+
+import hunt.collection.ByteBuffer;
+import hunt.collection.List;
+import hunt.util.Common;
+import hunt.Exceptions;
+import hunt.Functions;
 import hunt.logging;
-import hunt.string;
-import hunt.util.concurrent.CompletableFuture;
-import hunt.util.concurrent.Promise;
+import hunt.text;
+import hunt.concurrency.CompletableFuture;
+import hunt.concurrency.Promise;
 import hunt.util.Lifecycle;
 
 import std.string;
@@ -141,7 +144,7 @@ class SimpleWebSocketClient : AbstractLifecycle {
                 clientIncomingFrames.setWebSocketConnection(wsc);
             });
 
-            conn.upgradeWebSocket(request, webSocketPolicy, future, new class ClientHttpHandler.Adapter {
+            conn.upgradeWebSocket(request, webSocketPolicy, future, new class AbstractClientHttpHandler {
                 override
                 bool messageComplete(HttpRequest request, HttpResponse response,
                                                 HttpOutputStream output,

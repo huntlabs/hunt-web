@@ -9,11 +9,11 @@ import hunt.web.router.impl.RoutingContextImpl;
 // import hunt.http.utils.io.ByteArrayPipedStream;
 // import hunt.http.utils.io.FilePipedStream;
 
-import hunt.container;
+import hunt.collection;
 import hunt.io;
-import hunt.lang.exception;
+import hunt.Exceptions;
 import hunt.logging;
-import hunt.string;
+import hunt.text;
 import hunt.util.MimeTypeUtils;
 
 import std.array;

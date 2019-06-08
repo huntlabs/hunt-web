@@ -7,9 +7,9 @@ import hunt.web.server.SimpleHttpServer;
 import hunt.web.server.SimpleRequest;
 import hunt.web.server.SimpleResponse;
 
-import hunt.container;
+import hunt.collection;
 import hunt.logging;
-import hunt.string;
+import hunt.text;
 import hunt.util.MimeType;
 
 import std.conv;

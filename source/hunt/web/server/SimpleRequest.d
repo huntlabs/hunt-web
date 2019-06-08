@@ -7,11 +7,11 @@ import hunt.http.codec.http.stream.HttpConnection;
 import hunt.http.codec.http.stream.HttpOutputStream;
 import hunt.http.server.WebSocketHandler;
 
-import hunt.lang.common;
-import hunt.lang.exception;
-import hunt.string;
-
-import hunt.container;
+import hunt.collection;
+import hunt.Exceptions;
+import hunt.Functions;
+import hunt.text;
+import hunt.util.Common;
 
 import std.array;
 import std.container.array;

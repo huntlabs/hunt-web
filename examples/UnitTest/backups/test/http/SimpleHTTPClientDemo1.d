@@ -1,19 +1,19 @@
 module test.http;
 
 import java.io.IOException;
-import hunt.container.ByteBuffer;
+import hunt.collection.ByteBuffer;
 import java.nio.charset.StandardCharsets;
-import hunt.container.ArrayList;
-import hunt.container.List;
+import hunt.collection.ArrayList;
+import hunt.collection.List;
 import java.util.concurrent.Future;
 
 import hunt.http.client.http2.SimpleHttpClient;
 import hunt.http.client.http2.SimpleResponse;
 import hunt.http.codec.http.model.HttpHeader;
 import hunt.util.MimeTypeUtils;
-import hunt.http.codec.http.stream.Http2Configuration;
+import hunt.http.codec.http.stream.HttpConfiguration;
 import hunt.http.codec.http.stream.HttpOutputStream;
-import hunt.container.BufferUtils;
+import hunt.collection.BufferUtils;
 
 public class SimpleHttpClientDemo1 {
 

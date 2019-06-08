@@ -10,7 +10,7 @@ import hunt.util.Assert;
 import hunt.util.Test;
 import test.http.router.handler.AbstractHttpHandlerTest;
 
-import hunt.container.List;
+import hunt.collection.List;
 import java.util.concurrent.Phaser;
 
 

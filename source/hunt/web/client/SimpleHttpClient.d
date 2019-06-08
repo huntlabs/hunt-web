@@ -8,31 +8,32 @@ import hunt.http.client.Http2ClientConnection;
 import hunt.web.client.SimpleHttpClientConfiguration;
 import hunt.web.client.SimpleResponse;
 
-import hunt.http.util.UrlEncoded;
 import hunt.http.codec.http.frame.SettingsFrame;
 import hunt.http.codec.http.model;
 import hunt.http.codec.http.stream.HttpOutputStream;
 
-import hunt.container.ArrayList;
-import hunt.container.BufferUtils;
-import hunt.container.HashMap;
-import hunt.container.ByteBuffer;
-import hunt.container.List;
+import hunt.http.util.Completable;
+import hunt.http.util.UrlEncoded;
+
+
+import hunt.collection.ArrayList;
+import hunt.collection.BufferUtils;
+import hunt.collection.HashMap;
+import hunt.collection.ByteBuffer;
+import hunt.collection.List;
 
 import hunt.io;
-import hunt.lang.Charset;
-import hunt.lang.common;
-import hunt.lang.exception;
+import hunt.Char;
+import hunt.util.Common;
+import hunt.Exceptions;
 import hunt.logging;
-import hunt.string;
-import hunt.util.concurrent.CompletableFuture;
-import hunt.util.concurrent.Promise;
-import hunt.util.functional;
+import hunt.text;
+import hunt.concurrency.CompletableFuture;
+import hunt.concurrency.Promise;
+import hunt.Functions;
 import hunt.util.Lifecycle;
 
 import std.string;
-
-alias Response = MetaData.Response;
 
 class SimpleHttpClient  : AbstractLifecycle { 
 
@@ -70,18 +71,18 @@ class SimpleHttpClient  : AbstractLifecycle {
     class RequestBuilder {
         protected string host;
         protected int port;
-        protected MetaData.Request request;
+        protected HttpRequest request;
 
         List!(ByteBuffer) requestBody; // = new ArrayList!(ByteBuffer)();
 
         Func1!(HttpClientConnection, CompletableFuture!(bool)) connect;
-        Action1!(Response) _headerComplete;
+        Action1!(HttpResponse) _headerComplete;
         Action1!ByteBuffer _content;
-        Action1!(Response) _contentComplete;
-        Action1!(Response) _messageComplete;
+        Action1!(HttpResponse) _contentComplete;
+        Action1!(HttpResponse) _messageComplete;
 
-        Action3!(int, string, Response) _badMessage;
-        Action1!(Response) _earlyEof;
+        Action3!(int, string, HttpResponse) _badMessage;
+        Action1!(HttpResponse) _earlyEof;
 
         Promise!(HttpOutputStream) promise;
         Action1!(HttpOutputStream) _output;
@@ -97,7 +98,7 @@ class SimpleHttpClient  : AbstractLifecycle {
             init();
         }
 
-        protected this(string host, int port, MetaData.Request request) {
+        protected this(string host, int port, HttpRequest request) {
             this.host = host;
             this.port = port;
             this.request = request;
@@ -395,12 +396,12 @@ class SimpleHttpClient  : AbstractLifecycle {
          *                       it will execute this action.
          * @return RequestBuilder
          */
-        RequestBuilder headerComplete(Action1!(Response) h) {
+        RequestBuilder headerComplete(Action1!(HttpResponse) h) {
             this._headerComplete = h;
             return this;
         }
 
-        Action1!(Response) headerComplete() {
+        Action1!(HttpResponse) headerComplete() {
             return this._headerComplete;
         }
 
@@ -411,7 +412,7 @@ class SimpleHttpClient  : AbstractLifecycle {
          *                        that contains HTTP headers and body, it will execute this action.
          * @return RequestBuilder
          */
-        RequestBuilder messageComplete(Action1!(Response) m) {
+        RequestBuilder messageComplete(Action1!(HttpResponse) m) {
             this._messageComplete = m;
             return this;
         }
@@ -435,7 +436,7 @@ class SimpleHttpClient  : AbstractLifecycle {
          *                        it will execute this action.
          * @return RequestBuilder
          */
-        RequestBuilder contentComplete(Action1!(Response) c) {
+        RequestBuilder contentComplete(Action1!(HttpResponse) c) {
             this._contentComplete = c;
             return this;
         }
@@ -450,7 +451,7 @@ class SimpleHttpClient  : AbstractLifecycle {
          *                   The third parameter is HTTP response.
          * @return RequestBuilder
          */
-        RequestBuilder badMessage(Action3!(int, string, Response) b) {
+        RequestBuilder badMessage(Action3!(int, string, HttpResponse) b) {
             this._badMessage = b;
             return this;
         }
@@ -461,7 +462,7 @@ class SimpleHttpClient  : AbstractLifecycle {
          * @param earlyEof The early EOF callback. When the HTTP client encounters an error, it will execute this action.
          * @return RequestBuilder
          */
-        RequestBuilder earlyEof(Action1!(Response) e) {
+        RequestBuilder earlyEof(Action1!(HttpResponse) e) {
             this._earlyEof = e;
             return this;
         }
@@ -736,7 +737,7 @@ class SimpleHttpClient  : AbstractLifecycle {
             if (!(httpURI.getPath().strip().empty())) {
                 httpURI.setPath("/");
             }
-            req.request = new MetaData.Request(method, httpURI, HttpVersion.HTTP_1_1, new HttpFields());
+            req.request = new HttpRequest(method, httpURI, HttpVersion.HTTP_1_1, new HttpFields());
             return req;
         } catch (URISyntaxException e) {
             errorf("url exception", e);
@@ -893,7 +894,7 @@ class SimpleHttpClient  : AbstractLifecycle {
         } else if (reqBuilder._formUrlEncoded !is null) {
             string bd = reqBuilder._formUrlEncoded.encode((config.getCharacterEncoding()), true);
             byte[] content = cast(byte[])bd; // StringUtils.getBytes(bd);
-            connection.send(reqBuilder.request, ByteBuffer.wrap(content), handler);
+            connection.send(reqBuilder.request, BufferUtils.wrap(content), handler);
         } else {
             connection.send(reqBuilder.request, handler);
         }        
@@ -945,7 +946,7 @@ class SimpleHttpClient  : AbstractLifecycle {
                                                         // Timer.Context resTimerCtx,
                                                         // PooledObject!(HttpClientConnection) pooledConn) {
                                                         HttpClientConnection pooledConn) {
-        return (new ClientHttpHandler.Adapter() ).headerComplete((req, resp, outputStream, conn) {
+        return (new AbstractClientHttpHandler() ).headerComplete((req, resp, outputStream, conn) {
 
             auto header = reqBuilder.headerComplete;
             if(header !is null)
@@ -1024,7 +1025,7 @@ class SimpleHttpClient  : AbstractLifecycle {
                                     // Timer.Context resTimerCtx,
                                     // PooledObject!(HttpClientConnection) pooledConn,
                                     HttpClientConnection pooledConn,
-                                    Response resp) {
+                                    HttpResponse resp) {
         try {
             auto msg = reqBuilder._messageComplete;
             if(msg !is null)

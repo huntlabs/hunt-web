@@ -1,44 +1,39 @@
 module hunt.web.client.SimpleResponse;
 
 import hunt.http.codec.http.model;
-// import hunt.http.codec.http.model.MetaData.Response;
-
-// import hunt.http.utils.json.Json;
-// import hunt.http.utils.json.JsonArray;
-// import hunt.http.utils.json.JsonObject;
-// import hunt.http.utils.lang.GenericTypeReference;
 import hunt.logging;
 
 
 // import java.io.ByteArrayInputStream;
-import hunt.lang.common;
-import hunt.lang.exception;
-import hunt.util.functional;
+import hunt.util.Common;
+import hunt.Exceptions;
+import hunt.Functions;
 import hunt.io;
-import hunt.string;
+import hunt.text;
+import hunt.Functions;
 
-import hunt.container;
+import hunt.collection;
 // import java.util.Iterator;
 // import java.util.Spliterator;
 // import java.util.function.Consumer;
-// import hunt.util.functional;
+// import hunt.Functions;
 // import java.util.stream.Collectors;
 // import java.util.zip.GZIPInputStream;
 
 import std.range;
 
-alias Response = MetaData.Response;
+// alias HttpResponse = MetaData.HttpResponse;
 
 /**
 */
 class SimpleResponse {
 
-    Response response;
+    HttpResponse response;
     List!(ByteBuffer) responseBody; // = new ArrayList!ByteBuffer();
     List!Cookie cookies;
     string stringBody;
 
-    this(Response response) {
+    this(HttpResponse response) {
         responseBody = new ArrayList!ByteBuffer();
         this.response = response;
     }
@@ -79,7 +74,7 @@ class SimpleResponse {
     //     return response.spliterator();
     // }
 
-    Response getResponse() {
+    HttpResponse getResponse() {
         return response;
     }
 

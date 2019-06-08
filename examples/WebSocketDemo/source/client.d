@@ -2,8 +2,8 @@
 import hunt.web.client.SimpleWebSocketClient;
 import hunt.web.helper;
 import hunt.http.codec.websocket.stream.WebSocketConnection;
-import hunt.util.concurrent.Promise;
-import hunt.util.concurrent.CompletableFuture;
+import hunt.concurrency.Promise;
+import hunt.concurrency.CompletableFuture;
 
 import hunt.logging;
 

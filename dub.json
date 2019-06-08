@@ -1,10 +1,8 @@
 {
     "name": "hunt-web",
-    "authors": [
-        "Hunt Labs"
-    ],
-    "description": "Hunt Web.",
-    "copyright": "Copyright (C) 2018, HuntLabs.cn",
+    "description": "Hunt for web development.",
+    "copyright": "Copyright (C) 2018-2019, HuntLabs",
+    "homepage": "https://www.huntlabs.net",
     "license": "Apache-2.0",
     "dependencies": {
         "hunt-http": {
@@ -13,36 +11,12 @@
     },
     "configurations": [
         {
-            "name": "default",
-            "subConfigurations": {
-                "hunt-net": "default"
-            }
+            "name": "default"
         },
         {
-            "name": "boringssl",
-            "versions": [
-                "WithTLS"
-            ],
+            "name": "tls",
             "subConfigurations": {
-                "hunt-http": "boringssl"
-            }
-        },
-        {
-            "name": "openssl",
-            "versions": [
-                "WithTLS"
-            ],
-            "subConfigurations": {
-                "hunt-http": "openssl"
-            }
-        },
-        {
-            "name": "opensslv11",
-            "versions": [
-                "WithTLS"
-            ],
-            "subConfigurations": {
-                "hunt-http": "opensslv11"
+                "hunt-http": "tls"
             }
         }
     ]

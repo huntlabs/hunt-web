@@ -2,7 +2,7 @@ module hunt.web.router.impl.ContentTypePreciseMatcher;
 
 import hunt.web.router.impl.AbstractPreciseMatcher;
 import hunt.util.MimeTypeUtils;
-import hunt.string;
+import hunt.text;
 
 
 import hunt.web.router.Matcher;

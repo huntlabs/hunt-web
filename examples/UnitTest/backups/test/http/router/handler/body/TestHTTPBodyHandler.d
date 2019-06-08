@@ -13,7 +13,7 @@ import hunt.util.Test;
 import test.http.router.handler.AbstractHttpHandlerTest;
 
 import java.io.IOException;
-import hunt.container.ByteBuffer;
+import hunt.collection.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.concurrent.Phaser;

@@ -14,7 +14,7 @@ import test.component3.Person;
 import test.component3.PersonService;
 
 import java.util.Arrays;
-import hunt.container.List;
+import hunt.collection.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;

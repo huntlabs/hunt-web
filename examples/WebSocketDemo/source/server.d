@@ -3,8 +3,8 @@ import hunt.web.helper;
 import hunt.web.server.SimpleHttpServer;
 import hunt.web.server.SimpleWebSocketServer;
 
-import hunt.container;
-import hunt.string;
+import hunt.collection;
+import hunt.text;
 
 import hunt.logging;
 
